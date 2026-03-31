@@ -63,7 +63,139 @@
 
 @charset "utf-8";
 
-:root { --heading: #e8175d; --subheading: #cc527a; --annotation: #a8a7a7; --text: #363636; --text-other: #474747; --bg: #eeeeee; --white: #ffffff; --rule: #d8d8d8; --card-bg: #f8f8f8; --shadow: 0 2px 14px rgba(0,0,0,.08); --radius: 6px; --aloe: #e8175d; --climber: #2A5C7A; --climber-lt: #e6eff5; --bloom-full: #e8175d; --bloom-part: #cc527a; --prune: #4A7A3A; --feed: #D4820A; --frost: #2A5C7A; --repot: #7B3FA0; --propagate: #1A7A5A; --cal-empty: #e0e0e0; --cal-today: #e8175d; --arid: #D4820A; --savannah: #4A7A3A; --rocky: #8B5E3C; --hybrid: #7B3FA0; --neon-green: #39FF14; --neon-pink: #FF6EC7; --existing: #2A5C7A; --new-col: #e8175d; --outdoor: #4A7A3A; --both: #D4820A; }
+:root {
+  --heading: #e8175d; --subheading: #cc527a; --annotation: #a8a7a7;
+  --text: #363636; --text-other: #474747; --bg: #eeeeee;
+  --white: #ffffff; --rule: #d8d8d8; --card-bg: #f8f8f8;
+  --shadow: 0 2px 14px rgba(0,0,0,.08); --radius: 6px;
+  --aloe: #e8175d; --climber: #2A5C7A; --climber-lt: #e6eff5;
+  --bloom-full: #e8175d; --bloom-part: #cc527a; --prune: #4A7A3A;
+  --feed: #D4820A; --frost: #2A5C7A; --repot: #7B3FA0; --propagate: #1A7A5A;
+  --cal-empty: #e0e0e0; --cal-today: #e8175d;
+  --arid: #D4820A; --savannah: #4A7A3A; --rocky: #8B5E3C; --hybrid: #7B3FA0;
+  --neon-green: #39FF14; --neon-pink: #FF6EC7;
+  --existing: #2A5C7A; --new-col: #e8175d; --outdoor: #4A7A3A; --both: #D4820A;
+}
+
+/* ── DARK MODE ─────────────────────────────────────────── */
+body.dark {
+  --bg:       #1a1a1a;
+  --white:    #242424;
+  --card-bg:  #2a2a2a;
+  --rule:     #3a3a3a;
+  --text:     #e8e8e8;
+  --text-other: #c0c0c0;
+  --annotation: #808080;
+  --shadow:   0 2px 14px rgba(0,0,0,.4);
+  --cal-empty: #333333;
+  --climber-lt: #1e2f3a;
+}
+body.dark .tab-nav    { background: #1a1a1a; }
+body.dark .meta-tag   { background: #2a2a2a; color: #808080; }
+body.dark .filter-btn { background: #2a2a2a; color: #808080; }
+body.dark .filter-btn:hover { color: var(--subheading); }
+body.dark .badge-type { background: #333; color: #808080; border-color: #3a3a3a; }
+body.dark table       { background: var(--white); }
+body.dark thead tr    { background: #333; }
+body.dark .csv-block  { background: #2a2a2a; color: #c8c8c8; }
+body.dark .week-card  { background: var(--white); }
+body.dark .cal-wrap   { background: var(--white); }
+
+/* ── DARK MODE TOGGLE ──────────────────────────────────── */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 30px;
+  padding: 6px 12px 6px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+  user-select: none;
+}
+.theme-toggle:hover { border-color: var(--subheading); }
+.toggle-icon { font-size: 16px; line-height: 1; }
+.toggle-label {
+  font-size: 9px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--annotation);
+  font-family: inherit;
+}
+.toggle-track {
+  width: 32px; height: 18px;
+  background: var(--rule);
+  border-radius: 9px;
+  position: relative;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.toggle-thumb {
+  width: 12px; height: 12px;
+  background: var(--annotation);
+  border-radius: 50%;
+  position: absolute;
+  top: 3px; left: 3px;
+  transition: transform .2s, background .2s;
+}
+body.dark .toggle-track  { background: var(--heading); }
+body.dark .toggle-thumb  { transform: translateX(14px); background: #fff; }
+body.dark .toggle-label  { color: #aaa; }
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+/* Fix horizontal scroll: plant-grid min-width too wide */
+.plant-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(440px, 100%), 1fr));
+}
+
+@media (max-width: 768px) {
+  .page { padding: 0 16px 60px; }
+
+  .site-header {
+    padding: 48px 0 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-meta { text-align: left; margin-top: 8px; }
+
+  .main-title { font-size: clamp(28px, 8vw, 48px); }
+
+  .tab-nav { padding-top: 4px; }
+  .tab-btn { padding: 12px 14px 9px; font-size: 9px; }
+
+  .plant-grid { grid-template-columns: 1fr; gap: 14px; }
+
+  .stat-row { grid-template-columns: 86px 1fr; }
+
+  .bloom-bar .bm { font-size: 6.5px; height: 18px; }
+
+  .week-grid { grid-template-columns: 1fr; }
+
+  .cal-row { grid-template-columns: 140px 1fr; }
+
+  .tbl-wrap { font-size: 10px; }
+  table { min-width: 480px; }
+
+  .section-title { font-size: 10px; }
+
+  /* Theme toggle shifts down on mobile to avoid overlap with content */
+  .theme-toggle { top: 10px; right: 10px; padding: 5px 10px 5px 7px; }
+  .toggle-label { display: none; }
+}
+
+@media (max-width: 480px) {
+  .page { padding: 0 12px 60px; }
+  .tab-btn { padding: 10px 10px 8px; letter-spacing: .06em; }
+  .badge { font-size: 8px; padding: 2px 7px; }
+  .card-common { font-size: 17px; }
+  .stat-row { grid-template-columns: 76px 1fr; font-size: 11px; }
+  .bloom-bar .bm { font-size: 6px; }
+  .cal-row { grid-template-columns: 120px 1fr; }
+}
 
 *, ::before, ::after { box-sizing: border-box; margin: 0px; padding: 0px; }
 
@@ -500,6 +632,11 @@ footer { text-align: center; padding: 32px 0px 16px; border-top: 1px solid var(-
 
 </head>
 <body>
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+  <span class="toggle-icon" id="toggle-icon">🌙</span>
+  <span class="toggle-label" id="toggle-label">Dark</span>
+  <div class="toggle-track"><div class="toggle-thumb"></div></div>
+</button>
 <div class="page">
 
 <!-- SITE HEADER -->
@@ -5896,9 +6033,32 @@ footer { text-align: center; padding: 32px 0px 16px; border-top: 1px solid var(-
 
 
 <script>
-(function(){
+document.addEventListener('DOMContentLoaded', function() {
 
-  // ── 1. TABS ──────────────────────────────────────────────
+  // ── DARK MODE TOGGLE ─────────────────────────────────────
+  var toggleBtn   = document.getElementById('theme-toggle');
+  var toggleIcon  = document.getElementById('toggle-icon');
+  var toggleLabel = document.getElementById('toggle-label');
+  var isDark = localStorage.getItem('maravila-theme') === 'dark';
+
+  function applyTheme(dark) {
+    document.body.classList.toggle('dark', dark);
+    toggleIcon.textContent  = dark ? '☀️' : '🌙';
+    toggleLabel.textContent = dark ? 'Bright' : 'Dark';
+    localStorage.setItem('maravila-theme', dark ? 'dark' : 'light');
+  }
+
+  applyTheme(isDark);
+  if (toggleBtn) toggleBtn.addEventListener('click', function() {
+    isDark = !isDark;
+    applyTheme(isDark);
+  });
+
+  // ── CONSTANTS ────────────────────────────────────────────
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+  const NOW = new Date();
+
   const TAB_MAP = {
     'tab-week':        'pane-week',
     'tab-aloes':       'pane-aloes',
@@ -5913,38 +6073,6 @@ footer { text-align: center; padding: 32px 0px 16px; border-top: 1px solid var(-
     'tab-master-cal':  'pane-master-cal'
   };
 
-  function showTab(tabClass) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-    const btn = document.querySelector('.tab-btn.' + tabClass);
-    if (btn) btn.classList.add('active');
-    const paneId = TAB_MAP[tabClass];
-    if (paneId) {
-      const pane = document.getElementById(paneId);
-      if (pane) pane.classList.add('active');
-    }
-  }
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    const tabClass = Array.from(btn.classList).find(c => c.startsWith('tab-') && c !== 'tab-btn');
-    if (tabClass) btn.addEventListener('click', () => showTab(tabClass));
-  });
-
-  // Init — activate whichever tab has 'active' in HTML (aloes)
-  const initActive = document.querySelector('.tab-btn.active');
-  if (initActive) {
-    const tc = Array.from(initActive.classList).find(c => c.startsWith('tab-') && c !== 'tab-btn');
-    if (tc) showTab(tc);
-  }
-
-  // ── 2. NOTES BANNERS (collapsible) ───────────────────────
-  document.querySelectorAll('.notes-banner-header').forEach(header => {
-    header.addEventListener('click', () => {
-      header.closest('.notes-banner').classList.toggle('open');
-    });
-  });
-
-  // ── 3. ALOE FILTER ───────────────────────────────────────
   const ALOE_FILTER = {
     'fb-b1':       { attr: 'batch',  val: '1' },
     'fb-b2':       { attr: 'batch',  val: '2' },
@@ -5955,22 +6083,6 @@ footer { text-align: center; padding: 32px 0px 16px; border-top: 1px solid var(-
     'fb-hybrid':   { attr: 'group',  val: 'hybrid' }
   };
 
-  const aloeBar = document.querySelector('#pane-aloes .filter-bar');
-  if (aloeBar) {
-    aloeBar.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        aloeBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        const fc = Array.from(this.classList).find(c => c in ALOE_FILTER);
-        const f = fc ? ALOE_FILTER[fc] : null;
-        document.querySelectorAll('#aloe-grid .plant-card').forEach(card => {
-          card.classList.toggle('hidden', f ? card.dataset[f.attr] !== f.val : false);
-        });
-      });
-    });
-  }
-
-  // ── 4. CLIMBER FILTER ────────────────────────────────────
   const CLIMBER_FILTER = {
     'fb-ex':   { attr: 'status',   val: 'existing' },
     'fb-new2': { attr: 'status',   val: 'new' },
@@ -5978,50 +6090,7 @@ footer { text-align: center; padding: 32px 0px 16px; border-top: 1px solid var(-
     'fb-io':   { attr: 'location', val: 'both' }
   };
 
-  const climberBar = document.querySelector('#pane-climbers .filter-bar');
-  if (climberBar) {
-    climberBar.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        climberBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        const fc = Array.from(this.classList).find(c => c in CLIMBER_FILTER);
-        const f = fc ? CLIMBER_FILTER[fc] : null;
-        document.querySelectorAll('#climber-grid .plant-card').forEach(card => {
-          const show = !f ||
-            (f.attr === 'status'   && card.dataset.status   === f.val) ||
-            (f.attr === 'location' && card.dataset.location === f.val);
-          card.classList.toggle('hidden', !show);
-        });
-      });
-    });
-  }
-
-  // ── 5. LAYER TOGGLES (calendars) ─────────────────────────
-  document.querySelectorAll('.layer-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      this.classList.toggle('on');
-      const layer  = this.dataset.layer;
-      const isOn   = this.classList.contains('on');
-      const calBody = this.closest('.cal-wrap')?.querySelector('.cal-body');
-      if (!calBody) return;
-      // bloom layer controls both bloom + bloom-p pills
-      const selector = layer === 'bloom'
-        ? '.cal-pill.bloom, .cal-pill.bloom-p'
-        : '.cal-pill.' + layer;
-      calBody.querySelectorAll(selector).forEach(pill => {
-        pill.style.display = isOn ? '' : 'none';
-      });
-    });
-  });
-
-  // ── 6. CALENDAR NAVIGATION ───────────────────────────────
-  const MONTHS = ['January','February','March','April','May','June',
-                  'July','August','September','October','November','December'];
-  const NOW = new Date();
-
   // ── MASTER CALENDAR DATA ─────────────────────────────────
-  // events: { monthIndex: [{layer, label, type}] }
-  // layers: bloom, bloom-p, prune, feed, frost, repot, propagate
   const MCD = [
     { section: '🌵 Aloes', plants: [
       { name: 'Hercules Aloe', sci: 'A. barberae · Anchor', events: {
@@ -6527,82 +6596,186 @@ footer { text-align: center; padding: 32px 0px 16px; border-top: 1px solid var(-
     ]}
   ];
 
+  // ── MASTER CALENDAR RENDER ───────────────────────────────
+  var masterCalMonth = NOW.getMonth();
+
   function buildMasterCal(month) {
-    const activeLayers = new Set(
-      [...document.querySelectorAll('#pane-master-cal .layer-btn.on')].map(b => b.dataset.layer)
+    var activeLayers = new Set(
+      Array.from(document.querySelectorAll('#pane-master-cal .layer-btn.on')).map(function(b) { return b.dataset.layer; })
     );
-    let html = '';
-    for (const section of MCD) {
-      let sectionHtml = '';
-      for (const plant of section.plants) {
-        const evts = (plant.events[month] || []).filter(e => {
-          const layer = e.l === 'bloom' ? 'bloom' : e.l;
+    var html = '';
+    for (var si = 0; si < MCD.length; si++) {
+      var section = MCD[si];
+      var sectionHtml = '';
+      for (var pi = 0; pi < section.plants.length; pi++) {
+        var plant = section.plants[pi];
+        var evts = (plant.events[month] || []).filter(function(e) {
+          var layer = e.l === 'bloom' ? 'bloom' : e.l;
           return activeLayers.has(layer);
         });
         if (evts.length === 0) continue;
-        const pills = evts.map(e => `<span class="cal-pill ${e.t}">${e.s}</span>`).join('');
-        sectionHtml += `<div class="cal-row">
-    <div class="cal-plant-name">${plant.name}<small>${plant.sci}</small></div>
-    <div class="cal-events">${pills}</div>
-  </div>`;
+        var pills = evts.map(function(e) {
+          return '<span class="cal-pill ' + e.t + '">' + e.s + '</span>';
+        }).join('');
+        sectionHtml += '<div class="cal-row"><div class="cal-plant-name">' + plant.name +
+          '<small>' + plant.sci + '</small></div><div class="cal-events">' + pills + '</div></div>';
       }
       if (sectionHtml) {
-        html += `<div class="cal-section-head">${section.section}</div>${sectionHtml}`;
+        html += '<div class="cal-section-head">' + section.section + '</div>' + sectionHtml;
       }
     }
-    if (!html) html = '<div class="cal-empty-msg" style="padding:16px">No scheduled events this month for active layers.</div>';
-    document.getElementById('master-cal-body').innerHTML = `<div class="cal-month-grid">${html}</div>`;
+    if (!html) {
+      html = '<div class="cal-empty-msg" style="padding:16px">No scheduled events this month for active layers.</div>';
+    }
+    var body = document.getElementById('master-cal-body');
+    if (body) body.innerHTML = '<div class="cal-month-grid">' + html + '</div>';
   }
 
-  // Wire master cal nav separately from the generic cal nav loop
-  (function() {
-    const masterWrap = document.querySelector('#pane-master-cal .cal-wrap');
-    if (!masterWrap) return;
-    const titleEl  = masterWrap.querySelector('#master-cal-title');
-    const btns     = masterWrap.querySelectorAll('.cal-nav-btn');
-    const todayBtn = masterWrap.querySelector('.cal-today-btn');
-    let month = NOW.getMonth();
-
-    function render() {
-      const isCurrent = month === NOW.getMonth();
-      if (titleEl) titleEl.innerHTML = MONTHS[month] +
-        (isCurrent ? ' <span style="color:var(--heading)">▲ Current</span>' : '');
-      buildMasterCal(month);
+  function renderMasterCal() {
+    var titleEl = document.getElementById('master-cal-title');
+    if (titleEl) {
+      var isCurrent = masterCalMonth === NOW.getMonth();
+      titleEl.innerHTML = MONTHS[masterCalMonth] +
+        (isCurrent ? ' <span style="color:var(--heading)">\u25b2 Current</span>' : '');
     }
+    buildMasterCal(masterCalMonth);
+  }
 
-    if (btns[0]) btns[0].addEventListener('click', () => { month = (month + 11) % 12; render(); });
-    if (btns[1]) btns[1].addEventListener('click', () => { month = (month + 1)  % 12; render(); });
-    if (todayBtn) todayBtn.addEventListener('click', () => { month = NOW.getMonth(); render(); });
+  // ── 1. TABS ──────────────────────────────────────────────
+  function showTab(tabClass) {
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
+    var btn = document.querySelector('.tab-btn.' + tabClass);
+    if (btn) btn.classList.add('active');
+    var paneId = TAB_MAP[tabClass];
+    if (paneId) {
+      var pane = document.getElementById(paneId);
+      if (pane) pane.classList.add('active');
+    }
+  }
 
-    // Re-render when layers toggled in master cal
-    masterWrap.querySelectorAll('.layer-btn').forEach(btn => {
-      btn.addEventListener('click', () => setTimeout(() => buildMasterCal(month), 0));
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    var tabClass = Array.from(btn.classList).find(function(c) {
+      return c.startsWith('tab-') && c !== 'tab-btn';
     });
+    if (tabClass) btn.addEventListener('click', function() { showTab(tabClass); });
+  });
 
-    render(); // initial render
-  })();
+  // Init active tab
+  var initActive = document.querySelector('.tab-btn.active');
+  if (initActive) {
+    var tc = Array.from(initActive.classList).find(function(c) {
+      return c.startsWith('tab-') && c !== 'tab-btn';
+    });
+    if (tc) showTab(tc);
+  }
 
-  // Generic nav for all OTHER cal-wraps (not master)
-  document.querySelectorAll('.cal-wrap').forEach(wrap => {
-    if (wrap.closest('#pane-master-cal')) return; // skip — handled above
-    const titleEl = wrap.querySelector('.cal-month-title');
-    const btns    = wrap.querySelectorAll('.cal-nav-btn');
-    const todayBtn = wrap.querySelector('.cal-today-btn');
-    let month = NOW.getMonth();
+  // ── 2. NOTES BANNERS ────────────────────────────────────
+  document.querySelectorAll('.notes-banner-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+      header.closest('.notes-banner').classList.toggle('open');
+    });
+  });
+
+  // ── 3. ALOE FILTER ───────────────────────────────────────
+  var aloeBar = document.querySelector('#pane-aloes .filter-bar');
+  if (aloeBar) {
+    aloeBar.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        aloeBar.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var fc = Array.from(btn.classList).find(function(c) { return c in ALOE_FILTER; });
+        var f  = fc ? ALOE_FILTER[fc] : null;
+        document.querySelectorAll('#aloe-grid .plant-card').forEach(function(card) {
+          card.classList.toggle('hidden', f ? card.dataset[f.attr] !== f.val : false);
+        });
+      });
+    });
+  }
+
+  // ── 4. CLIMBER FILTER ────────────────────────────────────
+  var climberBar = document.querySelector('#pane-climbers .filter-bar');
+  if (climberBar) {
+    climberBar.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        climberBar.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var fc = Array.from(btn.classList).find(function(c) { return c in CLIMBER_FILTER; });
+        var f  = fc ? CLIMBER_FILTER[fc] : null;
+        document.querySelectorAll('#climber-grid .plant-card').forEach(function(card) {
+          var show = !f ||
+            (f.attr === 'status'   && card.dataset.status   === f.val) ||
+            (f.attr === 'location' && card.dataset.location === f.val);
+          card.classList.toggle('hidden', !show);
+        });
+      });
+    });
+  }
+
+  // ── 5. LAYER TOGGLES — all calendars except master ───────
+  document.querySelectorAll('.cal-wrap').forEach(function(wrap) {
+    if (wrap.closest('#pane-master-cal')) return;
+    wrap.querySelectorAll('.layer-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btn.classList.toggle('on');
+        var layer  = btn.dataset.layer;
+        var isOn   = btn.classList.contains('on');
+        var calBody = wrap.querySelector('.cal-body');
+        if (!calBody) return;
+        var selector = layer === 'bloom'
+          ? '.cal-pill.bloom, .cal-pill.bloom-p'
+          : '.cal-pill.' + layer;
+        calBody.querySelectorAll(selector).forEach(function(pill) {
+          pill.style.display = isOn ? '' : 'none';
+        });
+      });
+    });
+  });
+
+  // ── 6. MASTER CAL LAYER TOGGLES ─────────────────────────
+  var masterWrap = document.querySelector('#pane-master-cal .cal-wrap');
+  if (masterWrap) {
+    masterWrap.querySelectorAll('.layer-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btn.classList.toggle('on');
+        buildMasterCal(masterCalMonth);
+      });
+    });
+  }
+
+  // ── 7. MASTER CAL NAVIGATION ─────────────────────────────
+  var masterPrev  = document.querySelector('#pane-master-cal .cal-nav-btn:first-of-type');
+  var masterNext  = document.querySelector('#pane-master-cal .cal-nav-btn:last-of-type');
+  var masterToday = document.querySelector('#pane-master-cal .cal-today-btn');
+
+  if (masterPrev)  masterPrev.addEventListener('click',  function() { masterCalMonth = (masterCalMonth + 11) % 12; renderMasterCal(); });
+  if (masterNext)  masterNext.addEventListener('click',  function() { masterCalMonth = (masterCalMonth + 1)  % 12; renderMasterCal(); });
+  if (masterToday) masterToday.addEventListener('click', function() { masterCalMonth = NOW.getMonth(); renderMasterCal(); });
+
+  // ── 8. OTHER CAL NAVIGATION (tabs: aloes, trees, beds etc) ──
+  document.querySelectorAll('.cal-wrap').forEach(function(wrap) {
+    if (wrap.closest('#pane-master-cal')) return;
+    var titleEl = wrap.querySelector('.cal-month-title');
+    var btns    = wrap.querySelectorAll('.cal-nav-btn');
+    var todayBtn = wrap.querySelector('.cal-today-btn');
+    var month = NOW.getMonth();
 
     function renderTitle() {
       if (!titleEl) return;
-      const isCurrent = month === NOW.getMonth();
+      var isCurrent = month === NOW.getMonth();
       titleEl.innerHTML = MONTHS[month] +
-        (isCurrent ? ' <span style="color:var(--heading)">▲ Current</span>' : '');
+        (isCurrent ? ' <span style="color:var(--heading)">\u25b2 Current</span>' : '');
     }
 
-    if (btns[0]) btns[0].addEventListener('click', () => { month = (month + 11) % 12; renderTitle(); });
-    if (btns[1]) btns[1].addEventListener('click', () => { month = (month + 1)  % 12; renderTitle(); });
-    if (todayBtn) todayBtn.addEventListener('click', () => { month = NOW.getMonth(); renderTitle(); });
+    if (btns[0]) btns[0].addEventListener('click', function() { month = (month + 11) % 12; renderTitle(); });
+    if (btns[1]) btns[1].addEventListener('click', function() { month = (month + 1)  % 12; renderTitle(); });
+    if (todayBtn) todayBtn.addEventListener('click', function() { month = NOW.getMonth(); renderTitle(); });
   });
 
-})();
+  // ── INITIAL MASTER CAL RENDER ────────────────────────────
+  renderMasterCal();
+
+});
 </script>
 
 </body></html>
