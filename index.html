@@ -332,8 +332,8 @@ body.dark .main-title em { color: var(--neon-green) !important; font-weight: 400
 body.dark .eyebrow { color: rgba(255,255,255,0.55) !important; }
 body.dark .location-pill { color: var(--neon-green) !important; border-color: var(--neon-green) !important; }
 body.dark .location-pill .ph { color: var(--neon-green) !important; }
-.header-icon-row { display: flex; align-items: center; gap: 24px; margin-bottom: 52px; flex-wrap: nowrap; color: #3a3a3a; }
-.hdr-svg-icon { width: clamp(34px,5.1vw,68px); height: clamp(34px,5.1vw,68px); flex-shrink: 0; display: block; }
+.header-icon-row { display: flex; align-items: center; gap: clamp(10px, 2vw, 24px); margin-bottom: clamp(24px, 4vw, 52px); flex-wrap: nowrap; color: #3a3a3a; }
+.hdr-svg-icon { width: clamp(20px,4vw,68px) !important; height: clamp(20px,4vw,68px) !important; flex-shrink: 0; display: block; }
 body.dark .header-icon-row { color: #ffffff !important; }
 body.dark .hdr-svg-icon { color: #ffffff !important; }
 
@@ -414,48 +414,61 @@ body.dark .toggle-label  { color: #aaa; }
 }
 
 @media (max-width: 768px) {
-  .page { padding: 0 16px 60px; }
+  .page { padding: 16px 16px 60px; }
 
   .site-header {
-    padding: 48px 0 24px;
+    padding: 32px 24px 28px;
     flex-direction: column;
     align-items: flex-start;
+    border-radius: 20px;
+    gap: 20px;
   }
-  .header-meta { text-align: left; margin-top: 8px; }
+  .header-meta { text-align: left; margin-top: 4px; }
+  .header-icon-row { gap: 12px; margin-bottom: 28px; }
+  .hdr-svg-icon { width: clamp(16px, 5vw, 32px) !important; height: clamp(16px, 5vw, 32px) !important; }
 
-  .main-title { font-size: clamp(28px, 8vw, 48px); }
+  .main-title { font-size: clamp(32px, 10vw, 56px); margin-bottom: 10px; }
+  .eyebrow { font-size: clamp(8px, 2.2vw, 13px); letter-spacing: 0.1em; margin-bottom: 12px; white-space: normal; }
+  .subtitle { font-size: 9px; letter-spacing: 0.14em; }
+  .meta-tags { margin-top: 18px; gap: 6px; }
+  .meta-tag { font-size: 9px; padding: 4px 10px; }
+  .location-pill { font-size: 9px; padding: 4px 10px; }
 
   .tab-nav { padding-top: 4px; }
   .tab-btn { padding: 12px 14px 9px; font-size: 9px; }
 
+  .bento-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 32px; }
+  .bento-card { padding: 24px 24px 20px; min-height: 220px; border-radius: 20px; }
+  .bento-card-icon { font-size: 36px; margin-bottom: 12px; }
+  .bento-card-title { font-size: clamp(28px, 8vw, 44px); }
+  .bento-cal-month { font-size: clamp(36px, 9vw, 56px); }
+
   .plant-grid { grid-template-columns: 1fr; gap: 14px; }
-
   .stat-row { grid-template-columns: 86px 1fr; }
-
   .bloom-bar .bm { font-size: 6.5px; height: 18px; }
-
   .week-grid { grid-template-columns: 1fr; }
-
   .cal-row { grid-template-columns: 140px 1fr; }
-
   .tbl-wrap { font-size: 10px; }
   table { min-width: 480px; }
-
   .section-title { font-size: 10px; }
 
-  /* Theme toggle shifts down on mobile to avoid overlap with content */
   .theme-toggle { top: 10px; right: 10px; padding: 5px 10px 5px 7px; }
   .toggle-label { display: none; }
 }
 
 @media (max-width: 480px) {
-  .page { padding: 0 12px 60px; }
+  .page { padding: 12px 12px 60px; }
   .tab-btn { padding: 10px 10px 8px; letter-spacing: .06em; }
   .badge { font-size: 8px; padding: 2px 7px; }
   .card-common { font-size: 17px; }
   .stat-row { grid-template-columns: 76px 1fr; font-size: 11px; }
   .bloom-bar .bm { font-size: 6px; }
   .cal-row { grid-template-columns: 120px 1fr; }
+  .main-title { font-size: clamp(28px, 11vw, 44px); }
+  .hdr-svg-icon { width: clamp(14px, 4.5vw, 24px) !important; height: clamp(14px, 4.5vw, 24px) !important; }
+  .header-icon-row { gap: 8px; margin-bottom: 20px; }
+  .bento-card { padding: 20px 20px 16px; min-height: 180px; }
+  .bento-card-title { font-size: clamp(24px, 9vw, 38px); }
 }
 
 *, ::before, ::after { box-sizing: border-box; margin: 0px; padding: 0px; }
@@ -464,11 +477,11 @@ html { scroll-behavior: smooth; }
 
 body { background: var(--bg); color: var(--text); font-family: "Space Mono", "Courier New", monospace; font-size: 13px; line-height: 1.65; }
 
-.page { max-width: 1600px; margin: 0px auto; padding: 55px 64px 120px; }
+.page { max-width: 1600px; margin: 0px auto; padding: 55px 64px 120px; box-sizing: border-box; }
 
-.site-header { padding: 72px 80px 72px; border: none; border-radius: 40px; margin-bottom: 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 32px; background: var(--white); box-shadow: var(--shadow); position: relative; }
+.site-header { padding: clamp(32px, 5vw, 72px) clamp(24px, 6vw, 80px); border: none; border-radius: clamp(20px, 3vw, 40px); margin-bottom: 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 32px; background: var(--white); box-shadow: var(--shadow); position: relative; }
 
-.eyebrow { font-size: clamp(13px, 1.75vw, 21px); letter-spacing: 0.18em; text-transform: uppercase; color: #5a5a5a; margin-top: 14px; margin-bottom: 20px; font-weight: 300; }
+.eyebrow { font-size: clamp(9px, 1.2vw, 16px); letter-spacing: clamp(0.08em, 0.18em, 0.18em); text-transform: uppercase; color: #5a5a5a; margin-top: 14px; margin-bottom: 20px; font-weight: 300; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .main-title { font-size: clamp(60px, 9vw, 108px); font-weight: 400; color: #2a2a2a; line-height: 1.0; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.03em; font-family: "Space Mono", monospace; }
 
@@ -962,14 +975,32 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
   </div>
   <div class="header-meta">
     <span class="location-pill"><i class="ph ph-sphere"></i> Charneca de Caparica · Portugal</span>
-    <span class="date-note">March 2026 · All schedules zone-calibrated</span>
+    <span class="date-note" id="header-date-note">— · All schedules zone-calibrated</span>
   </div>
 </header>
 
 <!-- BENTO GRID -->
 <div class="bento-grid">
 
-  <!-- CARD 1: ALERTS -->
+  <!-- CARD 1: THIS WEEK -->
+  <div class="bento-card bento-week" onclick="document.querySelector('.tab-btn.tab-week').click()">
+    <div>
+      <i class="ph ph-list-checks bento-card-icon"></i>
+      <div class="bento-card-label">This Week</div>
+      <div class="bento-card-title" id="bento-week-month">—<br><span style="opacity:.45;font-size:.6em;letter-spacing:.04em" id="bento-week-num">WEEK —</span></div>
+      <div class="bento-week-tasks" id="bento-week-tasks">
+        <div class="bento-week-task"><strong>Pyrostegia venusta</strong> — train tendrils</div>
+        <div class="bento-week-task"><strong>Batch 2 (14×)</strong> — check root escape</div>
+        <div class="bento-week-task"><strong>Wisteria</strong> — bud swell imminent</div>
+      </div>
+    </div>
+    <div class="bento-card-footer">
+      <span class="bento-card-meta" id="bento-week-meta">— tasks active</span>
+      <div class="bento-plus">+</div>
+    </div>
+  </div>
+
+  <!-- CARD 2: ALERTS -->
   <div class="bento-card bento-alerts" onclick="document.querySelector('.tab-btn.tab-aloes').click();setTimeout(function(){document.getElementById('alerts-aloes').scrollIntoView({behavior:'smooth'})},200)">
     <div>
       <i class="ph ph-warning bento-card-icon"></i>
@@ -987,30 +1018,13 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
     </div>
   </div>
 
-  <!-- CARD 2: THIS WEEK -->
-  <div class="bento-card bento-week" onclick="document.querySelector('.tab-btn.tab-week').click()">
-    <div>
-      <i class="ph ph-list-checks bento-card-icon"></i>
-      <div class="bento-card-label">This Week</div>
-      <div class="bento-card-title">March<br><span style="opacity:.45;font-size:.6em;letter-spacing:.04em">WEEK 3</span></div>
-      <div class="bento-week-tasks">
-        <div class="bento-week-task"><strong>Pyrostegia venusta</strong> — train tendrils</div>
-        <div class="bento-week-task"><strong>Batch 2 (14×)</strong> — check root escape</div>
-        <div class="bento-week-task"><strong>Wisteria</strong> — bud swell imminent</div>
-      </div>
-    </div>
-    <div class="bento-card-footer">
-      <span class="bento-card-meta">6 tasks active</span>
-      <div class="bento-plus">+</div>
-    </div>
-  </div>
-
   <!-- CARD 3: MASTER CALENDAR -->
   <div class="bento-card bento-cal" onclick="document.querySelector('.tab-btn.tab-master-cal').click()">
     <div>
       <i class="ph ph-calendar-dots bento-card-icon"></i>
-      <div class="bento-card-label">Master Calendar</div>
-      <div class="bento-cal-month" id="bento-month-name">April</div>
+      <div class="bento-card-label">Master schedule</div>
+      <div class="bento-cal-month">Calendar</div>
+      <div style="font-size:clamp(11px,1.2vw,14px);font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:8px;margin-bottom:10px;" id="bento-month-name"></div>
       <div class="bento-cal-dots" id="bento-cal-dots"></div>
     </div>
     <div class="bento-card-footer">
@@ -1019,6 +1033,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
     </div>
   </div>
 
+</div
 </div>
 
 
@@ -1045,7 +1060,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
   <!-- PRIORITY ALERTS -->
   <div class="notes-banner open" id="alerts-week">
     <div class="notes-banner-header">
-      <strong><span class="alert-icon"><i class="ph ph-warning"></i></span> Priority alerts · March 2026</strong>
+      <strong><span class="alert-icon"><i class="ph ph-warning"></i></span> Priority alerts · <span id="alert-month-label">—</span></strong>
       <i class="ph ph-caret-down notes-chevron"></i>
     </div>
     <div class="notes-banner-body">
@@ -1058,7 +1073,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
   </div>
 
   <section class="section">
-    <h2 class="section-title">This Week <small>March · Week 3</small></h2>
+    <h2 class="section-title">This Week <small id="week-section-label">— · Week —</small></h2>
     <div class="week-grid">
 
       <div class="week-card">
@@ -2100,7 +2115,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="cal-controls">
         <div class="cal-nav">
           <button class="cal-nav-btn"><i class="ph ph-caret-left"></i></button>
-          <div class="cal-month-title" id="aloe-cal-title">March <span style="color:var(--heading)">▲ Current</span></div>
+          <div class="cal-month-title" id="aloe-cal-title"></div>
           <button class="cal-nav-btn"><i class="ph ph-caret-right"></i></button>
         </div>
         <button class="cal-today-btn">Today</button>
@@ -3918,7 +3933,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="cal-controls">
         <div class="cal-nav">
           <button class="cal-nav-btn"><i class="ph ph-caret-left"></i></button>
-          <div class="cal-month-title" id="beds-cal-title">March <span style="color:var(--heading)">▲ Current</span></div>
+          <div class="cal-month-title" id="beds-cal-title"></div>
           <button class="cal-nav-btn"><i class="ph ph-caret-right"></i></button>
         </div>
         <button class="cal-today-btn">Today</button>
@@ -3962,7 +3977,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="cal-controls">
         <div class="cal-nav">
           <button class="cal-nav-btn"><i class="ph ph-caret-left"></i></button>
-          <div class="cal-month-title" id="master-cal-title">March <span style="color:var(--heading)">▲ Current</span></div>
+          <div class="cal-month-title" id="master-cal-title"></div>
           <button class="cal-nav-btn"><i class="ph ph-caret-right"></i></button>
         </div>
         <button class="cal-today-btn">Today</button>
@@ -4935,7 +4950,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="cal-controls">
         <div class="cal-nav">
           <button class="cal-nav-btn"><i class="ph ph-caret-left"></i></button>
-          <div class="cal-month-title" id="climber-cal-title">March <span style="color:var(--heading)">▲ Current</span></div>
+          <div class="cal-month-title" id="climber-cal-title"></div>
           <button class="cal-nav-btn"><i class="ph ph-caret-right"></i></button>
         </div>
         <button class="cal-today-btn">Today</button>
@@ -6016,7 +6031,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="cal-controls">
         <div class="cal-nav">
           <button class="cal-nav-btn"><i class="ph ph-caret-left"></i></button>
-          <div class="cal-month-title" id="trees-cal-title">March <span style="color:var(--heading)">▲ Current</span></div>
+          <div class="cal-month-title" id="trees-cal-title"></div>
           <button class="cal-nav-btn"><i class="ph ph-caret-right"></i></button>
         </div>
         <button class="cal-today-btn">Today</button>
@@ -7986,7 +8001,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="cal-controls">
         <div class="cal-nav">
           <button class="cal-nav-btn"><i class="ph ph-caret-left"></i></button>
-          <div class="cal-month-title" id="beds-cal-title">March <span style="color:var(--heading)">▲ Current</span></div>
+          <div class="cal-month-title" id="beds-cal-title"></div>
           <button class="cal-nav-btn"><i class="ph ph-caret-right"></i></button>
         </div>
         <button class="cal-today-btn">Today</button>
@@ -8019,47 +8034,6 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
     </div>
   </section>
 </div>
-
-<!-- ════════════════════════════════════════════
-     TAB 5: MASTER CALENDAR
-════════════════════════════════════════════ -->
-<div class="tab-pane" id="pane-master-cal">
-  <section class="section">
-    <h2 class="section-title section-title green">Master Garden Calendar <small>All plants · All categories overlaid</small></h2>
-    <div class="cal-wrap">
-      <div class="cal-controls">
-        <div class="cal-nav">
-          <button class="cal-nav-btn"><i class="ph ph-caret-left"></i></button>
-          <div class="cal-month-title" id="master-cal-title">March <span style="color:var(--heading)">▲ Current</span></div>
-          <button class="cal-nav-btn"><i class="ph ph-caret-right"></i></button>
-        </div>
-        <button class="cal-today-btn">Today</button>
-      </div>
-      <div class="cal-toggles">
-        <span class="cal-toggle-lbl">Layers:</span>
-        <button class="layer-btn on" data-layer="bloom"><i class="ph ph-flower"></i> Flowering</button>
-        <button class="layer-btn on" data-layer="prune"><i class="ph ph-scissors"></i> Pruning</button>
-        <button class="layer-btn on" data-layer="feed"><i class="ph ph-flask"></i> Feeding</button>
-        <button class="layer-btn on" data-layer="frost"><i class="ph ph-snowflake"></i> Frost risk</button>
-        <button class="layer-btn on" data-layer="repot"><i class="ph ph-potted-plant"></i> Repotting</button>
-        <button class="layer-btn on" data-layer="propagate"><i class="ph ph-git-branch"></i> Propagation</button>
-      </div>
-      <div class="cal-body" id="master-cal-body"><div class="cal-month-grid"></div></div>
-      <div style="padding:0 20px 16px">
-        <div class="cal-legend">
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--bloom-full)"></div>Flowering / peak bloom</div>
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--bloom-part)"></div>Partial bloom</div>
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--prune)"></div>Pruning</div>
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--feed)"></div>Feeding active</div>
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--frost)"></div>Frost protection</div>
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--repot)"></div>Repotting window</div>
-          <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--propagate)"></div>Propagation window</div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
 <footer>
   MARAVILA 38 GARDEN · CATALOGUE · CHARNECA DE CAPARICA · MARCH 2026<br>
   All timelines and doses calibrated to USDA zone 10a · Coastal Mediterranean<br>
@@ -8189,8 +8163,7 @@ document.addEventListener('DOMContentLoaded', function() {
         8:[{l:'bloom',t:'bloom-p',s:'Late bloom'},{l:'feed',t:'feed',s:'Last feed'}],
         9:[{l:'repot',t:'repot',s:'Autumn repot window'}],
         10:[{l:'repot',t:'repot',s:'Autumn repot window'}]
-      }}
-    ]},
+      }},
       { name: 'Cardboard Plant ×2', sci: 'Zamia furfuracea', events: {
         2:[{l:'feed',t:'feed',s:'One slow-release granule — skip 2026'}],
         3:[{l:'repot',t:'repot',s:'Monitor re-establishment — no disturbance'}],
@@ -8222,7 +8195,8 @@ document.addEventListener('DOMContentLoaded', function() {
         11:[{l:'frost',t:'frost',s:'Protect from cold'}],
         0:[{l:'frost',t:'frost',s:'Protect — min 5°C'}],
         1:[{l:'frost',t:'frost',s:'Protect'}]
-      }},
+      }}
+    ]},
     { section: 'Climbers & Vines', plants: [
       { name: 'Wisteria sinensis', sci: 'Climber · In ground', events: {
         2:[{l:'feed',t:'feed',s:'High-K granule'}],
@@ -8698,6 +8672,60 @@ document.addEventListener('DOMContentLoaded', function() {
     buildMasterCal(masterCalMonth);
   }
 
+
+  // ── DYNAMIC DATE INIT ────────────────────────────────────
+  (function() {
+    var m = NOW.getMonth();
+    var y = NOW.getFullYear();
+    var monthName = MONTHS[m];
+
+    // Week number of the year
+    var startOfYear = new Date(y, 0, 1);
+    var weekNum = Math.ceil(((NOW - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+
+    // Week number within month (1–5)
+    var weekOfMonth = Math.ceil(NOW.getDate() / 7);
+
+    // ── Header date note ──
+    var dateNote = document.getElementById('header-date-note');
+    if (dateNote) dateNote.textContent = monthName + ' ' + y + ' · All schedules zone-calibrated';
+
+    // ── Alert banner month label ──
+    var alertLabel = document.getElementById('alert-month-label');
+    if (alertLabel) alertLabel.textContent = monthName + ' ' + y;
+
+    // ── This Week section title ──
+    var weekLabel = document.getElementById('week-section-label');
+    if (weekLabel) weekLabel.textContent = monthName + ' · Week ' + weekOfMonth;
+
+    // ── Bento week card ──
+    var bentoMonth = document.getElementById('bento-week-month');
+    var bentoWeekNum = document.getElementById('bento-week-num');
+    var bentoMeta = document.getElementById('bento-week-meta');
+    if (bentoMonth) bentoMonth.childNodes[0].textContent = monthName;
+    if (bentoWeekNum) bentoWeekNum.textContent = 'WEEK ' + weekOfMonth;
+
+    // Count visible week tasks for meta
+    var taskCount = document.querySelectorAll('.week-task').length;
+    if (bentoMeta) bentoMeta.textContent = taskCount + ' tasks active';
+
+    // ── All individual cal-month-title elements ──
+    var calTitles = [
+      { id: 'aloe-cal-title',    month: m },
+      { id: 'climber-cal-title', month: m },
+      { id: 'trees-cal-title',   month: m },
+      { id: 'beds-cal-title',    month: m },
+    ];
+    calTitles.forEach(function(ct) {
+      var els = document.querySelectorAll('#' + ct.id);
+      els.forEach(function(el) {
+        var isCurrent = ct.month === NOW.getMonth();
+        el.innerHTML = MONTHS[ct.month] +
+          (isCurrent ? ' <span style="color:var(--heading)">▲ Current</span>' : '');
+      });
+    });
+  })();
+
   // ── 1. TABS ──────────────────────────────────────────────
   function showTab(tabClass) {
     document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -8825,6 +8853,7 @@ document.addEventListener('DOMContentLoaded', function() {
         (isCurrent ? ' <span style="color:var(--heading)">\u25b2 Current</span>' : '');
     }
 
+    renderTitle();
     if (btns[0]) btns[0].addEventListener('click', function() { month = (month + 11) % 12; renderTitle(); });
     if (btns[1]) btns[1].addEventListener('click', function() { month = (month + 1)  % 12; renderTitle(); });
     if (todayBtn) todayBtn.addEventListener('click', function() { month = NOW.getMonth(); renderTitle(); });
