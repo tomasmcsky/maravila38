@@ -999,6 +999,27 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
     height: 26px;
   }
 }
+
+/* ── Aloe filter — category separators & labels (added) ── */
+.filter-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--rule);
+  flex-shrink: 0;
+  align-self: center;
+  margin: 0 2px;
+  border-radius: 1px;
+}
+.filter-cat-lbl {
+  font-family: inherit;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--annotation);
+  align-self: center;
+  flex-shrink: 0;
+  padding-right: 2px;
+}
 </style>
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%23e8175d'/></svg>">
@@ -1158,17 +1179,17 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
 
 <!-- TAB NAV -->
 <nav class="tab-nav">
-  <button class="tab-btn tab-week"><i class="ph ph-list-checks"></i> This Week</button>
-  <button class="tab-btn tab-aloes active"><i class="ph ph-flower"></i> Aloes</button>
-  <button class="tab-btn tab-climbers"><i class="ph ph-vine"></i> Climbers &amp; Vines</button>
-  <button class="tab-btn tab-palms"><i class="ph ph-tree-palm"></i> Palms</button>
-  <button class="tab-btn tab-trees"><i class="ph ph-tree-evergreen"></i> Trees &amp; Shrubs</button>
-  <button class="tab-btn tab-succulents"><i class="ph ph-flower-lotus"></i> Succulents</button>
-  <button class="tab-btn tab-tropicals"><i class="ph ph-leaf"></i> Tropicals</button>
-  <button class="tab-btn tab-grasses"><i class="ph ph-grass"></i> Grasses</button>
-  <button class="tab-btn tab-ferns"><i class="ph ph-fern"></i> Ferns</button>
-  <button class="tab-btn tab-beds"><i class="ph ph-shovel"></i> Garden Beds</button>
-  <button class="tab-btn tab-master-cal"><i class="ph ph-calendar-dots"></i> Master Calendar</button>
+  <button class="tab-btn tab-week"><i class="ph ph-dots-nine"></i> This Week</button>
+  <button class="tab-btn tab-aloes active"><i class="ph ph-dots-nine"></i> Aloes</button>
+  <button class="tab-btn tab-climbers"><i class="ph ph-dots-nine"></i> Climbers &amp; Vines</button>
+  <button class="tab-btn tab-palms"><i class="ph ph-dots-nine"></i> Palms</button>
+  <button class="tab-btn tab-trees"><i class="ph ph-dots-nine"></i> Trees &amp; Shrubs</button>
+  <button class="tab-btn tab-succulents"><i class="ph ph-dots-nine"></i> Succulents</button>
+  <button class="tab-btn tab-tropicals"><i class="ph ph-dots-nine"></i> Tropicals</button>
+  <button class="tab-btn tab-grasses"><i class="ph ph-dots-nine"></i> Grasses</button>
+  <button class="tab-btn tab-ferns"><i class="ph ph-dots-nine"></i> Ferns</button>
+  <button class="tab-btn tab-beds"><i class="ph ph-dots-nine"></i> Garden Beds</button>
+  <button class="tab-btn tab-master-cal"><i class="ph ph-dots-nine"></i> Master Calendar</button>
 </nav>
 
 <!-- ════════════════════════════════════════════
@@ -1394,22 +1415,39 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
   </div>
 
   <section class="section">
-    <h2 class="section-title">Aloe Collection <small>29 specimens + May 2026 batch · Batch 1, Batch 2, New &amp; May 2026</small></h2>
+    <h2 class="section-title">Aloe Collection <small>38 specimens · growth · form · size · bloom · sun</small></h2>
 
     <div class="filter-bar">
       <span class="filter-lbl">Filter:</span>
       <button class="filter-btn active">All</button>
-      <button class="filter-btn fb-b1">Batch 1</button>
-      <button class="filter-btn fb-b2">Batch 2</button>
-      <button class="filter-btn fb-new">New</button>
-      <button class="filter-btn fb-may26">May 2026</button>
-      <button class="filter-btn fb-arid">Arabian / Arid</button>
-      <button class="filter-btn fb-rocky">SA Rocky</button>
-      <button class="filter-btn fb-savannah">Savannah</button>
-      <button class="filter-btn fb-hybrid">Hybrid</button>
+      <span class="filter-sep" aria-hidden="true"></span>
+      <span class="filter-cat-lbl">Growth</span>
+      <button class="filter-btn fb-slow">Slow</button>
+      <button class="filter-btn fb-moderate">Moderate</button>
+      <button class="filter-btn fb-fast">Fast</button>
+      <span class="filter-sep" aria-hidden="true"></span>
+      <span class="filter-cat-lbl">Form</span>
+      <button class="filter-btn fb-tree">Tree</button>
+      <button class="filter-btn fb-clumping">Clumping</button>
+      <button class="filter-btn fb-stemless">Stemless</button>
+      <span class="filter-sep" aria-hidden="true"></span>
+      <span class="filter-cat-lbl">Size</span>
+      <button class="filter-btn fb-compact">Compact</button>
+      <button class="filter-btn fb-medium">Medium</button>
+      <button class="filter-btn fb-large">Large</button>
+      <span class="filter-sep" aria-hidden="true"></span>
+      <span class="filter-cat-lbl">Bloom</span>
+      <button class="filter-btn fb-winter">Winter</button>
+      <button class="filter-btn fb-spring">Spring</button>
+      <button class="filter-btn fb-summer">Summer</button>
+      <button class="filter-btn fb-autumn">Autumn</button>
+      <span class="filter-sep" aria-hidden="true"></span>
+      <span class="filter-cat-lbl">Sun</span>
+      <button class="filter-btn fb-fullsun">Full sun</button>
+      <button class="filter-btn fb-partshade">Part shade</button>
     </div>
 
-    <div class="plant-grid" id="aloe-grid"><div class="plant-card" data-batch="1" data-group="arid" id="acard-1">
+    <div class="plant-grid" id="aloe-grid"><div class="plant-card" data-batch="1" data-group="arid" id="acard-1" data-growth="moderate" data-form="tree" data-size="large" data-bloom="winter" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloidendron-barberae.jpg" alt="Aloidendron barberae (Hercules)" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1449,7 +1487,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Y-split crossed = botanical maturity. Concrete outer pot with pumice air gap. First flower est. 2028–2030.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="1" data-group="arid" id="acard-2">
+  </div><div class="plant-card" data-batch="1" data-group="arid" id="acard-2" data-growth="slow" data-form="tree" data-size="medium" data-bloom="winter" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-sabaea-small.jpg" alt="Aloe sabaea" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1489,7 +1527,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Rare Arabian tree aloe. Highest winter risk — move within 20 cm of wall Nov–Feb.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="1" data-group="savannah" id="acard-3">
+  </div><div class="plant-card" data-batch="1" data-group="savannah" id="acard-3" data-growth="moderate" data-form="stemless" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-lutescens.jpg" alt="Aloe lutescens" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1529,7 +1567,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Also A. cryptopoda var. lutescens. Full south sun exposure is key driver.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="1" data-group="rocky" id="acard-4">
+  </div><div class="plant-card" data-batch="1" data-group="rocky" id="acard-4" data-growth="moderate" data-form="stemless" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-buhrii.jpg" alt="Aloe buhrii" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1569,7 +1607,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Three specimens — colony forming potential.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="1" data-group="arid" id="acard-5">
+  </div><div class="plant-card" data-batch="1" data-group="arid" id="acard-5" data-growth="slow" data-form="tree" data-size="medium" data-bloom="winter" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-sabaea-large.jpg" alt="Aloe sabaea" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1609,7 +1647,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Sub-adult stored energy. Highest winter risk — move within 20 cm of wall Nov–Feb.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="1" data-group="hybrid" id="acard-6">
+  </div><div class="plant-card" data-batch="1" data-group="hybrid" id="acard-6" data-growth="fast" data-form="tree" data-size="medium" data-bloom="winter" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-marlothii-x-sabaea.jpg" alt="Aloe marlothii × sabaea" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1649,7 +1687,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Step-up unlocks root volume. Hybrid vigour. Fast transformer.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="1" data-group="hybrid" id="acard-7">
+  </div><div class="plant-card" data-batch="1" data-group="hybrid" id="acard-7" data-growth="moderate" data-form="tree" data-size="large" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-marlothii-x-rupestris.jpg" alt="Aloe marlothii × rupestris" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1689,7 +1727,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Fastest grower in collection. Hybrid vigour. Benchmark challenger to vaombe.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="1" data-group="savannah" id="acard-8">
+  </div><div class="plant-card" data-batch="1" data-group="savannah" id="acard-8" data-growth="slow" data-form="tree" data-size="medium" data-bloom="spring" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-megalacantha.jpg" alt="Aloe megalacantha" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1729,7 +1767,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Three seedlings forming a colony. Ethiopian highland origin. Patient — spring surprise.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-9">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-9" data-growth="slow" data-form="stemless" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-aculeata.jpg" alt="Aloe aculeata" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1769,7 +1807,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Spiny leaf margins — handle with care during repotting.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-10">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-10" data-growth="moderate" data-form="stemless" data-size="compact" data-bloom="autumn" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-reynoldsii.jpg" alt="Aloe reynoldsii" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1809,7 +1847,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Less common in cultivation. Brazilian nursery spelling variant accepted.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="arid" id="acard-11">
+  </div><div class="plant-card" data-batch="2" data-group="arid" id="acard-11" data-growth="slow" data-form="tree" data-size="medium" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-ramosissima.jpg" alt="Aloe ramosissima" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1849,7 +1887,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Dwarf — width not height. Wide shallow pot preferred at next step-up. Winter move required.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-12">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-12" data-growth="moderate" data-form="tree" data-size="medium" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-littoralis.jpg" alt="Aloe littoralis" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1889,7 +1927,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Vigorous in full sun. Stem elongation = maturity signal.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-13">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-13" data-growth="fast" data-form="clumping" data-size="medium" data-bloom="winter" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-arborescens.jpg" alt="Aloe arborescens" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1929,7 +1967,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Y-split = botanical maturity. Multi-stem habit adds bulk quickly. Fastest-maturing in Batch 2.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-14">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-14" data-growth="moderate" data-form="clumping" data-size="compact" data-bloom="summer" data-sun="partial">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-maculata.jpg" alt="Aloe maculata" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -1969,7 +2007,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Offsets = maturity signal. Sap historically used as soap substitute.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="arid" id="acard-15">
+  </div><div class="plant-card" data-batch="2" data-group="arid" id="acard-15" data-growth="slow" data-form="tree" data-size="large" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloidendron-dichotomum.jpg" alt="Aloidendron dichotomum" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2009,7 +2047,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Y-split = botanical maturity. Slowest long-term but most dramatic adult form. Winter move required.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-16">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-16" data-growth="slow" data-form="stemless" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-peglerae.jpg" alt="Aloe peglerae" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2049,7 +2087,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Distinctive inward-curving leaves forming a round head — the "fez" shape.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-17">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-17" data-growth="slow" data-form="stemless" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-cipolinicola.jpg" alt="Aloe cipolinicola" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2089,7 +2127,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Uncommon highland species. Warmth bonus on this south wall.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-18">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-18" data-growth="slow" data-form="tree" data-size="medium" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-ferox.jpg" alt="Aloe ferox" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2129,7 +2167,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Vaombe-class grower. Commercially harvested for Cape aloe bitters.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-19">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-19" data-growth="moderate" data-form="stemless" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-striata.jpg" alt="Aloe striata" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2169,7 +2207,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Smooth-edged leaves, coral-pink flush. Among earliest to flower in Batch 2.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-20">
+  </div><div class="plant-card" data-batch="2" data-group="rocky" id="acard-20" data-growth="slow" data-form="tree" data-size="large" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-marlothii.jpg" alt="Aloe marlothii" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2209,7 +2247,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Vaombe-class grower. Stem lift = maturity signal. Parent of both hybrids in collection.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="new" data-group="savannah" id="acard-21">
+  </div><div class="plant-card" data-batch="new" data-group="savannah" id="acard-21" data-growth="slow" data-form="tree" data-size="large" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-vaombe.jpg" alt="Aloe vaombe" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2249,7 +2287,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Collection benchmark. 5 cm to 50 cm in 2 seasons. Recently repotted — establishment phase.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="new" data-group="rocky" id="acard-22">
+  </div><div class="plant-card" data-batch="new" data-group="rocky" id="acard-22" data-growth="slow" data-form="clumping" data-size="medium" data-bloom="winter" data-sun="partial">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-plicatilis.jpg" alt="Aloe plicatilis" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2289,7 +2327,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Unique opposite distichous leaf arrangement — the only aloe with fan-shaped rosette. Fynbos endemic.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="new" data-group="rocky" id="acard-23">
+  </div><div class="plant-card" data-batch="new" data-group="rocky" id="acard-23" data-growth="moderate" data-form="clumping" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-distans.jpg" alt="Aloe distans" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2329,7 +2367,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Low-spreading habit with distinctive toothed margins. Juvenile rule: +3 cm step-up.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="new" data-group="rocky" id="acard-24">
+  </div><div class="plant-card" data-batch="new" data-group="rocky" id="acard-24" data-growth="moderate" data-form="clumping" data-size="compact" data-bloom="summer" data-sun="partial">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-mitriformis.jpg" alt="Aloe mitriformis" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2369,7 +2407,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Compact sprawling habit. Named for mitre-shaped leaf profile. Pairs well with A. distans.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-25">
+  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-25" data-growth="moderate" data-form="tree" data-size="medium" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-thraskii.jpg" alt="Aloe thraskii" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2402,7 +2440,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Coastal dune species with recurved leaves. Salt-tolerant. Develops single-stem tree habit.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="hybrid" id="acard-26">
+  </div><div class="plant-card" data-batch="may-2026" data-group="hybrid" id="acard-26" data-growth="moderate" data-form="clumping" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-marlothii-x-humilis.jpg" alt="Aloe marlothii × humilis" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2435,7 +2473,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Dwarf clumping hybrid — marlothii leaf form scaled down by humilis parent.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-27">
+  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-27" data-growth="moderate" data-form="tree" data-size="medium" data-bloom="winter" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-elegans.jpg" alt="Aloe elegans" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2468,7 +2506,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Highland Ethiopian species. Eventually leans or branches with age.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-28">
+  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-28" data-growth="slow" data-form="tree" data-size="large" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-excelsa.jpg" alt="Aloe excelsa" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2501,7 +2539,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">National flower of Zimbabwe. Slow-growing classic tree aloe — long-term investment.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-29">
+  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-29" data-growth="fast" data-form="clumping" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-vanbalenii.jpg" alt="Aloe vanbalenii" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2534,7 +2572,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Sprawling stoloniferous habit. Leaves twist and turn pinkish-orange in full sun.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-30">
+  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-30" data-growth="slow" data-form="stemless" data-size="compact" data-bloom="autumn" data-sun="partial">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-polyphylla.jpg" alt="Aloe polyphylla" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2567,7 +2605,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Iconic perfect-spiral rosette. Wants cooler conditions, more moisture than typical aloes. Solitary — no offsets.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="hybrid" id="acard-31">
+  </div><div class="plant-card" data-batch="may-2026" data-group="hybrid" id="acard-31" data-growth="moderate" data-form="clumping" data-size="compact" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-spinosissima.jpg" alt="Aloe spinosissima" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2600,7 +2638,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Prolific clumping garden hybrid. Spine-edged leaves with golden teeth.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-32">
+  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-32" data-growth="moderate" data-form="tree" data-size="large" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-rupestris.jpg" alt="Aloe rupestris" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2633,7 +2671,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Distinctive bottlebrush flower spikes — one of few aloes with this form. Pure-species counterpart to the marlothii × rupestris hybrid in Batch 1.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="arid" id="acard-33">
+  </div><div class="plant-card" data-batch="may-2026" data-group="arid" id="acard-33" data-growth="slow" data-form="stemless" data-size="compact" data-bloom="autumn" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-gariepensis.jpg" alt="Aloe gariepensis" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2666,7 +2704,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Drought-hardy arid species. Narrow erect leaves with white spots. Tolerates extreme heat.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-34">
+  </div><div class="plant-card" data-batch="may-2026" data-group="rocky" id="acard-34" data-growth="moderate" data-form="clumping" data-size="medium" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-succotrina.jpg" alt="Aloe succotrina" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2699,7 +2737,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Winter-flowering Cape fynbos species. Suckers to form dense clumps. Tolerates more moisture than most aloes.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-35">
+  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-35" data-growth="moderate" data-form="tree" data-size="medium" data-bloom="summer" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-alooides.jpg" alt="Aloe alooides" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2732,7 +2770,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Distinctive twisted/curly flower tubes — unusual among aloes. Slender tree habit (narrower than ferox or marlothii). Bushveld granite outcrop species.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="hybrid" id="acard-36">
+  </div><div class="plant-card" data-batch="may-2026" data-group="hybrid" id="acard-36" data-growth="fast" data-form="tree" data-size="large" data-bloom="winter" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloidendron-hercules.jpg" alt="×Aloidendron 'Hercules'" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2765,7 +2803,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Hybrid vigour — among the fastest tree aloes. Blue-grey glaucous foliage from dichotomum parent. Develops forked dichotomum-style crown with age. Pair-mate to anchor A. barberae 'Hercules' but visually distinct (more silver-blue, more vertical).</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-37">
+  </div><div class="plant-card" data-batch="may-2026" data-group="savannah" id="acard-37" data-growth="moderate" data-form="tree" data-size="medium" data-bloom="autumn" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-lineata.jpg" alt="Aloe lineata" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -2798,7 +2836,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       <div class="divider"></div>
       <div class="aloe-stat full"><span class="stat-lbl">Notes</span><span class="stat-val" style="font-style:normal;color:var(--text-other)">Prominent vertical lines on leaves, hence the name. Red margins on new growth. Eventually develops short stem. Plugs the August–October bloom window.</span></div>
     </div>
-  </div><div class="plant-card" data-batch="may-2026" data-group="arid" id="acard-38">
+  </div><div class="plant-card" data-batch="may-2026" data-group="arid" id="acard-38" data-growth="slow" data-form="stemless" data-size="compact" data-bloom="autumn" data-sun="full">
     <div class="card-photo pending">
       <img src="images/aloes/aloe-karasbergensis.jpg" alt="Aloe karasbergensis" onload="this.parentElement.classList.remove('pending')" onerror="this.style.display='none'">
       <div class="card-photo-placeholder">
@@ -9468,14 +9506,21 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   const ALOE_FILTER = {
-    'fb-b1':       { attr: 'batch',  val: '1' },
-    'fb-b2':       { attr: 'batch',  val: '2' },
-    'fb-new':      { attr: 'batch',  val: 'new' },
-    'fb-may26':    { attr: 'batch',  val: 'may-2026' },
-    'fb-arid':     { attr: 'group',  val: 'arid' },
-    'fb-rocky':    { attr: 'group',  val: 'rocky' },
-    'fb-savannah': { attr: 'group',  val: 'savannah' },
-    'fb-hybrid':   { attr: 'group',  val: 'hybrid' }
+    'fb-slow':      { attr: 'growth', val: 'slow' },
+    'fb-moderate':  { attr: 'growth', val: 'moderate' },
+    'fb-fast':      { attr: 'growth', val: 'fast' },
+    'fb-tree':      { attr: 'form',   val: 'tree' },
+    'fb-clumping':  { attr: 'form',   val: 'clumping' },
+    'fb-stemless':  { attr: 'form',   val: 'stemless' },
+    'fb-compact':   { attr: 'size',   val: 'compact' },
+    'fb-medium':    { attr: 'size',   val: 'medium' },
+    'fb-large':     { attr: 'size',   val: 'large' },
+    'fb-winter':    { attr: 'bloom',  val: 'winter' },
+    'fb-spring':    { attr: 'bloom',  val: 'spring' },
+    'fb-summer':    { attr: 'bloom',  val: 'summer' },
+    'fb-autumn':    { attr: 'bloom',  val: 'autumn' },
+    'fb-fullsun':   { attr: 'sun',    val: 'full' },
+    'fb-partshade': { attr: 'sun',    val: 'partial' }
   };
 
   const CLIMBER_FILTER = {
