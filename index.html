@@ -654,9 +654,10 @@ body { background: var(--bg); color: var(--text); font-family: "Space Mono", "Co
   display: flex; align-items: center; justify-content: center;
   background: rgba(20,20,20,0.35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   color: #ffffff; font-size: 16px; cursor: pointer;
-  opacity: 0; transition: opacity 0.25s;
+  opacity: 0; transition: opacity 0.25s, color 0.2s;
 }
 .plant-card.has-history:hover .history-badge { opacity: 1; }
+.history-badge:hover { color: var(--neon-green); }
 .card-photo { position: relative; }
 
 .tm-lightbox {
@@ -679,16 +680,16 @@ body { background: var(--bg); color: var(--text); font-family: "Space Mono", "Co
 .tm-frame[data-depth="3"] { transform: translateY(36px) scale(0.82); filter: blur(5px) brightness(0.5); opacity: 0.35; z-index: 7; }
 .tm-frame[data-depth="hidden"] { opacity: 0; pointer-events: none; z-index: 1; }
 
-.tm-rail { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 22px; }
-.tm-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.2s, width 0.2s; }
-.tm-dot.active { background: var(--neon-green); width: 18px; border-radius: 3px; }
+.tm-rail { display: flex; gap: 6px; align-items: center; justify-content: center; margin-top: 22px; }
+.tm-line { width: 1.5px; height: 25px; border-radius: 1px; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.2s; }
+.tm-line.active { background: var(--neon-green); }
 
 .tm-date-label {
   text-align: center; margin-top: 10px; font-family: "Space Mono", monospace;
   font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--neon-green);
   opacity: 0; transition: opacity 0.2s; white-space: pre;
 }
-.tm-stack-wrap:hover .tm-date-label, .tm-filmstrip-wrap:hover .tm-date-label { opacity: 1; }
+.tm-viewer:hover .tm-date-label { opacity: 1; }
 
 .tm-close { position: absolute; top: 24px; right: 28px; font-size: 26px; color: #fff; cursor: pointer; opacity: 0.7; z-index: 20; }
 .tm-close:hover { opacity: 1; }
@@ -1238,14 +1239,14 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
 </div>
 
 <!-- COLLECTION-WIDE CARE LOG — visible across all tabs -->
-<div class="notes-banner open" id="collection-care-log" style="border-color:var(--heading)">
+<div class="notes-banner open" id="collection-care-log" style="background:#3a3a3a;color:#d8d8d8;border-color:#555555">
   <div class="notes-banner-header">
     <strong><span class="alert-icon"><i class="ph ph-notebook"></i></span> Collection-Wide Care Log</strong>
     <i class="ph ph-caret-down notes-chevron"></i>
   </div>
   <div class="notes-banner-body">
-    <div style="margin-bottom:10px"><span style="color:var(--heading);font-weight:700">Jun 2026 — Warm season watering override:</span> applies whenever ambient runs 25–30°C+ (current months). Overrides the per-card cooler-season Watering row intervals below until temperatures drop. <span style="color:var(--text-other)">Small/young pots: every 2 days · Medium pots / root-expanded specimens: every 2–3 days · Largest specimens: every 3–4 days.</span></div>
-    <div><span style="color:var(--heading);font-weight:700">Jun 2026 — Horse compost trial (2nd feed):</span> isolating compost-only response — <span style="color:var(--text-other)">no slow-release granule this round, 50% rate, applied to Aloe sabaea (small ×2 + large) and Aloe ferox (split specimen). 1st feed (compost + Boskot Exactyon) showed colour brightening / recovery growth with no burn across the collection.</span></div>
+    <div style="margin-bottom:10px"><span style="color:#eaeaea;font-weight:700">Jun 2026 — Warm season watering override:</span> applies whenever ambient runs 25–30°C+ (current months). Overrides the per-card cooler-season Watering row intervals below until temperatures drop. <span style="color:#a8a7a7">Small/young pots: every 2 days · Medium pots / root-expanded specimens: every 2–3 days · Largest specimens: every 3–4 days.</span></div>
+    <div><span style="color:#eaeaea;font-weight:700">Jun 2026 — Horse compost trial (2nd feed):</span> isolating compost-only response — <span style="color:#a8a7a7">no slow-release granule this round, 50% rate, applied to Aloe sabaea (small ×2 + large) and Aloe ferox (split specimen). 1st feed (compost + Boskot Exactyon) showed colour brightening / recovery growth with no burn across the collection.</span></div>
   </div>
 </div>
 
@@ -10558,7 +10559,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tmLightbox.className = 'tm-lightbox';
       tmLightbox.innerHTML =
         '<div class="tm-close"><i class="ph ph-x"></i></div>' +
-        '<div style="display:flex;flex-direction:column;align-items:center;width:100%">' +
+        '<div class="tm-viewer" style="display:flex;flex-direction:column;align-items:center;width:100%">' +
         '  <div class="tm-stack-wrap"></div>' +
         '  <div class="tm-filmstrip-wrap"><div class="tm-filmstrip"></div></div>' +
         '  <div class="tm-rail"></div>' +
@@ -10566,9 +10567,13 @@ document.addEventListener('DOMContentLoaded', function() {
         '</div>';
       document.body.appendChild(tmLightbox);
       tmLightbox.addEventListener('click', function(e) {
-        if (e.target === tmLightbox) closeTimeMachine();
+        if (e.target.closest('.tm-frame') || e.target.closest('.tm-line') || e.target.closest('.tm-close')) return;
+        closeTimeMachine();
       });
-      tmLightbox.querySelector('.tm-close').addEventListener('click', closeTimeMachine);
+      tmLightbox.querySelector('.tm-close').addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeTimeMachine();
+      });
     }
 
     // Build frame list: current live photo first (newest), then history oldest->newest reversed so index 0 = now
@@ -10597,10 +10602,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const fsFrame = frame.cloneNode(true);
       filmstrip.appendChild(fsFrame);
 
-      const dot = document.createElement('div');
-      dot.className = 'tm-dot';
-      dot.addEventListener('click', function() { idx = i; render(); });
-      rail.appendChild(dot);
+      const line = document.createElement('div');
+      line.className = 'tm-line';
+      line.addEventListener('click', function() { idx = i; render(); });
+      rail.appendChild(line);
     });
 
     function render() {
@@ -10609,7 +10614,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const depth = i - idx;
         el.setAttribute('data-depth', depth < 0 ? 'hidden' : (depth > 3 ? 'hidden' : depth));
       });
-      rail.querySelectorAll('.tm-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+      rail.querySelectorAll('.tm-line').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
       const f = frames[idx];
       if (f.date === 'now') {
         dateLabel.textContent = 'NOW';
