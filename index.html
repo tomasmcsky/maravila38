@@ -10509,18 +10509,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ═══ TIME MACHINE — growth history viewer, auto-detected via jsDelivr ═══
   function initTimeMachine() {
-    const REPO = 'tomasmcsky/maravila38@main';
-    fetch('https://data.jsdelivr.com/v1/packages/gh/' + REPO + '/flat')
+    const OWNER = 'tomasmcsky', REPO = 'maravila38';
+    fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/git/trees/main?recursive=1')
       .then(function(r) { return r.ok ? r.json() : null; })
       .then(function(data) {
-        if (!data || !data.files) return;
+        if (!data || !data.tree) return;
         const byCard = {};
-        data.files.forEach(function(f) {
-          const m = f.name.match(/^\/images\/aloes\/history\/(acard-\d+)\/(\d{4}-\d{2})\.(jpg|jpeg|png)$/i);
+        data.tree.forEach(function(entry) {
+          if (entry.type !== 'blob') return;
+          const m = entry.path.match(/^images\/aloes\/history\/(acard-\d+)\/(\d{4}-\d{2})\.(jpg|jpeg|png)$/i);
           if (m) {
             const cardId = m[1], yyyymm = m[2];
             if (!byCard[cardId]) byCard[cardId] = [];
-            byCard[cardId].push({ date: yyyymm, url: 'https://cdn.jsdelivr.net/gh/' + REPO + f.name });
+            byCard[cardId].push({
+              date: yyyymm,
+              url: 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/main/' + entry.path
+            });
           }
         });
         Object.keys(byCard).forEach(function(cardId) {
