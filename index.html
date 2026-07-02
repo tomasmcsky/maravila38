@@ -551,6 +551,16 @@ body { background: var(--bg); color: var(--text); font-family: "Space Mono", "Co
 
 .notes-banner.open .notes-banner-body { max-height: 500px; padding: 0px 18px 14px; }
 
+/* Collection-Wide Care Log — light mode: inverted (light bg, dark text) */
+.care-log { background: #eaeaea; color: #3a3a3a; border-color: #cfcfcf; }
+.care-log-emphasis { color: #3a3a3a; font-weight: 700; }
+.care-log-detail { color: #5a5a5a; }
+
+/* Collection-Wide Care Log — dark mode: previous graphite palette (dark bg, light text) */
+body.dark .care-log { background: #3a3a3a; color: #d8d8d8; border-color: #555555; }
+body.dark .care-log-emphasis { color: #eaeaea; font-weight: 700; }
+body.dark .care-log-detail { color: #a8a7a7; }
+
 .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; align-items: center; }
 
 .filter-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--annotation); }
@@ -1239,14 +1249,14 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
 </div>
 
 <!-- COLLECTION-WIDE CARE LOG — visible across all tabs -->
-<div class="notes-banner open" id="collection-care-log" style="background:#3a3a3a;color:#d8d8d8;border-color:#555555">
+<div class="notes-banner open care-log" id="collection-care-log">
   <div class="notes-banner-header">
     <strong><span class="alert-icon"><i class="ph ph-notebook"></i></span> Collection-Wide Care Log</strong>
     <i class="ph ph-caret-down notes-chevron"></i>
   </div>
   <div class="notes-banner-body">
-    <div style="margin-bottom:10px"><span style="color:#eaeaea;font-weight:700">Jun 2026 — Warm season watering override:</span> applies whenever ambient runs 25–30°C+ (current months). Overrides the per-card cooler-season Watering row intervals below until temperatures drop. <span style="color:#a8a7a7">Small/young pots: every 2 days · Medium pots / root-expanded specimens: every 2–3 days · Largest specimens: every 3–4 days.</span></div>
-    <div><span style="color:#eaeaea;font-weight:700">Jun 2026 — Horse compost trial (2nd feed):</span> isolating compost-only response — <span style="color:#a8a7a7">no slow-release granule this round, 50% rate, applied to Aloe sabaea (small ×2 + large) and Aloe ferox (split specimen). 1st feed (compost + Boskot Exactyon) showed colour brightening / recovery growth with no burn across the collection.</span></div>
+    <div style="margin-bottom:10px"><span class="care-log-emphasis">Jun 2026 — Warm season watering override:</span> applies whenever ambient runs 25–30°C+ (current months). Overrides the per-card cooler-season Watering row intervals below until temperatures drop. <span class="care-log-detail">Small/young pots: every 2 days · Medium pots / root-expanded specimens: every 2–3 days · Largest specimens: every 3–4 days.</span></div>
+    <div><span class="care-log-emphasis">Jun 2026 — Horse compost trial (2nd feed):</span> isolating compost-only response — <span class="care-log-detail">no slow-release granule this round, 50% rate, applied to Aloe sabaea (small ×2 + large) and Aloe ferox (split specimen). 1st feed (compost + Boskot Exactyon) showed colour brightening / recovery growth with no burn across the collection.</span></div>
   </div>
 </div>
 
@@ -10576,10 +10586,12 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
-    // Build frame list: current live photo first (newest), then history oldest->newest reversed so index 0 = now
+    // Build frame list: current live photo first (newest, only if it actually loaded), then history newest-first
+    const photoWrap = card.querySelector('.card-photo');
     const liveImg = card.querySelector('.card-photo img');
+    const hasLivePhoto = photoWrap && !photoWrap.classList.contains('pending') && liveImg && liveImg.naturalWidth > 0;
     const frames = [];
-    if (liveImg && liveImg.src) frames.push({ date: 'now', url: liveImg.src, label: 'NOW' });
+    if (hasLivePhoto) frames.push({ date: 'now', url: liveImg.src, label: 'NOW' });
     for (let i = history.length - 1; i >= 0; i--) frames.push(history[i]);
 
     let idx = 0;
@@ -10595,7 +10607,7 @@ document.addEventListener('DOMContentLoaded', function() {
     frames.forEach(function(f, i) {
       const frame = document.createElement('div');
       frame.className = 'tm-frame';
-      frame.innerHTML = '<img src="' + f.url + '" alt="">';
+      frame.innerHTML = '<img src="' + f.url + '" alt="" onerror="this.style.opacity=0">';
       frame.addEventListener('click', function(e) { e.stopPropagation(); if (i !== idx) { idx = i; render(); } });
       stackWrap.appendChild(frame);
 
@@ -10619,29 +10631,15 @@ document.addEventListener('DOMContentLoaded', function() {
       if (f.date === 'now') {
         dateLabel.textContent = 'NOW';
       } else {
-        const win = window.bloomState.parseBloomWindow(getFloweringText(card));
         const [y, mo] = f.date.split('-');
         const monthIdx = parseInt(mo, 10) - 1;
         const names = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
-        const flowering = win ? window.bloomState.isFloweringNow(win, new Date(parseInt(y,10), monthIdx, 1)) : false;
-        dateLabel.textContent = names[monthIdx] + '\u00A0\u00A0\u00A0' + y + (flowering ? '  ·  FLOWERING' : '');
+        dateLabel.textContent = names[monthIdx] + '\u00A0\u00A0\u00A0' + y;
       }
       const fsChildren = filmstrip.querySelectorAll('.tm-frame');
       if (fsChildren[idx]) fsChildren[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
     render();
-
-    function getFloweringText(card) {
-      let text = null;
-      card.querySelectorAll('.aloe-stat, .aloe-stat.full').forEach(function(row) {
-        const lbl = row.querySelector('.stat-lbl');
-        if (lbl && lbl.textContent.trim() === 'Flowering season') {
-          const val = row.querySelector('.stat-val');
-          if (val) text = val.textContent;
-        }
-      });
-      return text;
-    }
 
     function onWheel(e) {
       e.preventDefault();
@@ -10653,6 +10651,8 @@ document.addEventListener('DOMContentLoaded', function() {
       else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (idx > 0) { idx--; render(); } }
       else if (e.key === 'Escape') { closeTimeMachine(); }
     }
+    if (tmLightbox._onWheel) tmLightbox.removeEventListener('wheel', tmLightbox._onWheel);
+    if (tmLightbox._onKey) document.removeEventListener('keydown', tmLightbox._onKey);
     tmLightbox._onWheel = onWheel;
     tmLightbox._onKey = onKey;
     tmLightbox.addEventListener('wheel', onWheel, { passive: false });
