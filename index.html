@@ -10517,18 +10517,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const byCard = {};
         data.tree.forEach(function(entry) {
           if (entry.type !== 'blob') return;
-          const m = entry.path.match(/^images\/aloes\/history\/(acard-\d+)\/(\d{4}-\d{2})\.(jpg|jpeg|png)$/i);
+          const m = entry.path.match(/^images\/aloes\/history\/(acard-\d+)\/(\d{4}-\d{2})(?:[-_][^/]*)?\.(jpg|jpeg|png)$/i);
           if (m) {
             const cardId = m[1], yyyymm = m[2];
             if (!byCard[cardId]) byCard[cardId] = [];
             byCard[cardId].push({
               date: yyyymm,
+              file: entry.path,
               url: 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/main/' + entry.path
             });
           }
         });
         Object.keys(byCard).forEach(function(cardId) {
-          byCard[cardId].sort(function(a, b) { return a.date.localeCompare(b.date); });
+          byCard[cardId].sort(function(a, b) {
+            const byDate = a.date.localeCompare(b.date);
+            return byDate !== 0 ? byDate : a.file.localeCompare(b.file);
+          });
           const card = document.getElementById(cardId);
           if (!card) return;
           card.classList.add('has-history');
