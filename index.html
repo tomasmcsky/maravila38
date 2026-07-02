@@ -642,6 +642,8 @@ body { background: var(--bg); color: var(--text); font-family: "Space Mono", "Co
 .badge.bnew { background: #5f5f5f; color: #ffffff; }
 
 .badge.may26 { background: #6b6b6b; color: #ffffff; }
+.badge.flowering-now { background: var(--neon-pink); color: #000000; font-weight: 700; animation: bloom-pulse 2.4s ease-in-out infinite; }
+@keyframes bloom-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
 
 /* ══════════════════════════════════════════════════════════
    CARD PHOTO COMPONENT — square image on top of plant card
@@ -10313,6 +10315,94 @@ document.addEventListener('DOMContentLoaded', function() {
   renderMasterCal();
 
 });
+</script>
+
+<!-- ═══ BLOOM STATE ENGINE — vegetative / flowering, synced to today's date ═══ -->
+<script>
+(function() {
+  const MONTHS = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 };
+  const SEASON_MONTHS = { winter:[11,0,1], spring:[2,3,4], summer:[5,6,7], autumn:[8,9,10] };
+
+  function parseBloomWindow(text) {
+    if (!text) return null;
+    const monthMatch = text.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*[\u2013\-]\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/);
+    if (monthMatch) {
+      return { start: MONTHS[monthMatch[1]], end: MONTHS[monthMatch[2]] };
+    }
+    const lower = text.toLowerCase();
+    const found = [];
+    for (const season in SEASON_MONTHS) {
+      if (lower.indexOf(season) !== -1) found.push(SEASON_MONTHS[season]);
+    }
+    if (found.length === 1) return { seasonMonths: found[0] };
+    if (found.length > 1) return { seasonMonths: Array.from(new Set(found.flat())) };
+    return null;
+  }
+
+  function isFloweringNow(win, today) {
+    if (!win) return false;
+    const m = today.getMonth();
+    if (win.seasonMonths) return win.seasonMonths.indexOf(m) !== -1;
+    const { start, end } = win;
+    if (start <= end) return m >= start && m <= end;
+    return m >= start || m <= end; // wraps year end (e.g. Nov–Feb)
+  }
+
+  // Exposed globally so the Time Machine viewer (once live) can reuse the same logic
+  window.bloomState = { parseBloomWindow, isFloweringNow };
+
+  function applyBloomState(card, today) {
+    const rows = card.querySelectorAll('.aloe-stat, .aloe-stat.full');
+    let floweringText = null;
+    rows.forEach(function(row) {
+      const lbl = row.querySelector('.stat-lbl');
+      if (lbl && lbl.textContent.trim() === 'Flowering season') {
+        const val = row.querySelector('.stat-val');
+        if (val) floweringText = val.textContent;
+      }
+    });
+    if (!floweringText) return;
+
+    const win = parseBloomWindow(floweringText);
+    const flowering = isFloweringNow(win, today);
+    const badgeRow = card.querySelector('.card-badges');
+    const existingBadge = badgeRow ? badgeRow.querySelector('.badge.flowering-now') : null;
+    const img = card.querySelector('.card-photo img');
+
+    if (flowering) {
+      if (badgeRow && !existingBadge) {
+        const b = document.createElement('span');
+        b.className = 'badge flowering-now';
+        b.textContent = 'Flowering now';
+        badgeRow.appendChild(b);
+      }
+      if (img) {
+        if (!img.dataset.defaultSrc) img.dataset.defaultSrc = img.getAttribute('src');
+        const floweringSrc = 'images/aloes/flowering/' + card.id + '.jpg';
+        img.onerror = function() {
+          this.onerror = null;
+          this.src = this.dataset.defaultSrc;
+        };
+        img.src = floweringSrc;
+      }
+      card.classList.add('is-flowering');
+    } else {
+      if (existingBadge) existingBadge.remove();
+      if (img && img.dataset.defaultSrc) {
+        img.onerror = function() { this.style.display = 'none'; };
+        img.src = img.dataset.defaultSrc;
+      }
+      card.classList.remove('is-flowering');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    document.querySelectorAll('.plant-card[id^="acard-"]').forEach(function(card) {
+      applyBloomState(card, today);
+    });
+  });
+})();
 </script>
 
 </body></html>
