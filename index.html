@@ -646,6 +646,65 @@ body { background: var(--bg); color: var(--text); font-family: "Space Mono", "Co
 @keyframes bloom-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
 
 /* ══════════════════════════════════════════════════════════
+   TIME MACHINE — growth history viewer
+   ══════════════════════════════════════════════════════════ */
+.history-badge {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(20,20,20,0.35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  color: #ffffff; font-size: 16px; cursor: pointer;
+  opacity: 0; transition: opacity 0.25s;
+}
+.plant-card.has-history:hover .history-badge { opacity: 1; }
+.card-photo { position: relative; }
+
+.tm-lightbox {
+  position: fixed; inset: 0; z-index: 9999; display: none;
+  align-items: center; justify-content: center;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.97) 100%);
+}
+.tm-lightbox.open { display: flex; }
+.tm-stack-wrap { position: relative; width: min(70vw, 640px); height: min(70vh, 640px); display: flex; align-items: center; justify-content: center; }
+.tm-frame {
+  position: absolute; width: 100%; height: 100%; border-radius: 25px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), filter 0.45s, opacity 0.45s;
+  cursor: pointer;
+}
+.tm-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tm-frame[data-depth="0"] { transform: translateZ(0) scale(1); filter: none; opacity: 1; z-index: 10; }
+.tm-frame[data-depth="1"] { transform: translateY(14px) scale(0.94); filter: blur(1.5px) brightness(0.82); opacity: 0.85; z-index: 9; }
+.tm-frame[data-depth="2"] { transform: translateY(26px) scale(0.88); filter: blur(3px) brightness(0.65); opacity: 0.6; z-index: 8; }
+.tm-frame[data-depth="3"] { transform: translateY(36px) scale(0.82); filter: blur(5px) brightness(0.5); opacity: 0.35; z-index: 7; }
+.tm-frame[data-depth="hidden"] { opacity: 0; pointer-events: none; z-index: 1; }
+
+.tm-rail { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 22px; }
+.tm-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.2s, width 0.2s; }
+.tm-dot.active { background: var(--neon-green); width: 18px; border-radius: 3px; }
+
+.tm-date-label {
+  text-align: center; margin-top: 10px; font-family: "Space Mono", monospace;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--neon-green);
+  opacity: 0; transition: opacity 0.2s; white-space: pre;
+}
+.tm-stack-wrap:hover .tm-date-label, .tm-filmstrip-wrap:hover .tm-date-label { opacity: 1; }
+
+.tm-close { position: absolute; top: 24px; right: 28px; font-size: 26px; color: #fff; cursor: pointer; opacity: 0.7; z-index: 20; }
+.tm-close:hover { opacity: 1; }
+
+/* Mobile: horizontal scroll-snap filmstrip instead of 3D stack */
+@media (max-width: 768px) {
+  .tm-stack-wrap { display: none; }
+  .tm-filmstrip-wrap { display: block; width: 100%; }
+  .tm-filmstrip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding: 0 24px; }
+  .tm-filmstrip .tm-frame { position: static; flex: 0 0 78vw; height: 60vh; scroll-snap-align: center; transform: none !important; filter: none !important; opacity: 1 !important; }
+}
+@media (min-width: 769px) {
+  .tm-filmstrip-wrap { display: none; }
+}
+
+/* ══════════════════════════════════════════════════════════
    CARD PHOTO COMPONENT — square image on top of plant card
    Pending state uses group-tinted dark fallbacks
    ══════════════════════════════════════════════════════════ */
@@ -2288,7 +2347,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
         <div class="aloe-stat full"><span class="stat-lbl">Watering</span><span class="stat-val">Est. 45–55 L/session · 12–14 days</span></div>
         <div class="aloe-stat full"><span class="stat-lbl">Growth 2026</span><span class="stat-val">Benchmark · ~25 cm/active season</span></div>
         <div class="aloe-stat full"><span class="stat-lbl">Adult size</span><span class="stat-val">4–6 m single stem</span></div>
-        <div class="aloe-stat full"><span class="stat-lbl">Flowering season</span><span class="stat-val">Variable · red-orange</span></div>
+        <div class="aloe-stat full"><span class="stat-lbl">Flowering season</span><span class="stat-val">Dec–Feb · red-orange</span></div>
       </div>
       <div class="divider"></div>
       <div><div class="mini-mix-label">Soil mix · Mix C — Savannah/Ethiopian</div><div class="mini-mix"><span style="width:30%;background:#9B7550" title="Potting mix 30%"></span><span style="width:30%;background:#C9C2AC" title="Pumice 30%"></span><span style="width:20%;background:#C0A87A" title="River sand 20%"></span><span style="width:12%;background:#6B4A2E" title="Biobizz 12%"></span><span style="width:8%;background:#D6D2CB" title="Crushed rock 8%"></span></div><div class="mini-mix-legend"><div class="mml-item"><div class="mml-dot" style="background:#9B7550"></div>Potting mix 30%</div><div class="mml-item"><div class="mml-dot" style="background:#C9C2AC"></div>Pumice 30%</div><div class="mml-item"><div class="mml-dot" style="background:#C0A87A"></div>River sand 20%</div><div class="mml-item"><div class="mml-dot" style="background:#6B4A2E"></div>Biobizz 12%</div><div class="mml-item"><div class="mml-dot" style="background:#D6D2CB"></div>Crushed rock 8%</div></div></div>
@@ -10401,7 +10460,201 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.plant-card[id^="acard-"]').forEach(function(card) {
       applyBloomState(card, today);
     });
+    syncCalendarBloomState(today);
+    initTimeMachine();
   });
+
+  // ═══ CALENDAR SYNC — flags currently-flowering specimens in the Aloe Calendar ═══
+  function syncCalendarBloomState(today) {
+    const calBody = document.getElementById('aloe-cal-body');
+    if (!calBody) return;
+    // Build a lookup of common-name -> flowering state from the live cards
+    const cardStates = {};
+    document.querySelectorAll('.plant-card[id^="acard-"]').forEach(function(card) {
+      const isFlowering = card.classList.contains('is-flowering');
+      const nameEl1 = card.querySelector('.card-common');      // holds scientific name in this catalogue
+      const nameEl2 = card.querySelector('.card-scientific');  // holds common name in this catalogue
+      if (nameEl1) cardStates[nameEl1.textContent.trim().toLowerCase()] = isFlowering;
+      if (nameEl2) cardStates[nameEl2.textContent.trim().toLowerCase()] = isFlowering;
+    });
+    calBody.querySelectorAll('.cal-row').forEach(function(row) {
+      const nameEl = row.querySelector('.cal-plant-name');
+      if (!nameEl) return;
+      const rawName = nameEl.childNodes[0] ? nameEl.childNodes[0].textContent.trim() : nameEl.textContent.trim();
+      const key = rawName.replace(/[★]/g, '').trim().toLowerCase();
+      // fuzzy match: exact, or contains
+      let flowering = cardStates[key];
+      if (flowering === undefined) {
+        for (const k in cardStates) {
+          if (key.indexOf(k) !== -1 || k.indexOf(key) !== -1) { flowering = cardStates[k]; break; }
+        }
+      }
+      const eventsEl = row.querySelector('.cal-events');
+      if (!eventsEl) return;
+      const existing = eventsEl.querySelector('.cal-pill.bloom-live');
+      if (flowering) {
+        if (!existing) {
+          const pill = document.createElement('span');
+          pill.className = 'cal-pill bloom-live';
+          pill.style.background = 'var(--neon-pink)';
+          pill.style.color = '#000';
+          pill.innerHTML = '<i class="ph ph-flower-lotus"></i> Flowering now';
+          eventsEl.insertBefore(pill, eventsEl.firstChild);
+        }
+      } else if (existing) {
+        existing.remove();
+      }
+    });
+  }
+
+  // ═══ TIME MACHINE — growth history viewer, auto-detected via jsDelivr ═══
+  function initTimeMachine() {
+    const REPO = 'tomasmcsky/maravila38@main';
+    fetch('https://data.jsdelivr.com/v1/packages/gh/' + REPO + '/flat')
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (!data || !data.files) return;
+        const byCard = {};
+        data.files.forEach(function(f) {
+          const m = f.name.match(/^\/images\/aloes\/history\/(acard-\d+)\/(\d{4}-\d{2})\.(jpg|jpeg|png)$/i);
+          if (m) {
+            const cardId = m[1], yyyymm = m[2];
+            if (!byCard[cardId]) byCard[cardId] = [];
+            byCard[cardId].push({ date: yyyymm, url: 'https://cdn.jsdelivr.net/gh/' + REPO + f.name });
+          }
+        });
+        Object.keys(byCard).forEach(function(cardId) {
+          byCard[cardId].sort(function(a, b) { return a.date.localeCompare(b.date); });
+          const card = document.getElementById(cardId);
+          if (!card) return;
+          card.classList.add('has-history');
+          const photoWrap = card.querySelector('.card-photo');
+          if (!photoWrap) return;
+          const badge = document.createElement('div');
+          badge.className = 'history-badge';
+          badge.innerHTML = '<i class="ph ph-waveform"></i>';
+          badge.addEventListener('click', function(e) {
+            e.stopPropagation();
+            openTimeMachine(card, byCard[cardId]);
+          });
+          photoWrap.appendChild(badge);
+        });
+      })
+      .catch(function() { /* history is an enhancement — fail silently if offline or repo unreachable */ });
+  }
+
+  let tmLightbox = null;
+  function openTimeMachine(card, history) {
+    if (!tmLightbox) {
+      tmLightbox = document.createElement('div');
+      tmLightbox.className = 'tm-lightbox';
+      tmLightbox.innerHTML =
+        '<div class="tm-close"><i class="ph ph-x"></i></div>' +
+        '<div style="display:flex;flex-direction:column;align-items:center;width:100%">' +
+        '  <div class="tm-stack-wrap"></div>' +
+        '  <div class="tm-filmstrip-wrap"><div class="tm-filmstrip"></div></div>' +
+        '  <div class="tm-rail"></div>' +
+        '  <div class="tm-date-label"></div>' +
+        '</div>';
+      document.body.appendChild(tmLightbox);
+      tmLightbox.addEventListener('click', function(e) {
+        if (e.target === tmLightbox) closeTimeMachine();
+      });
+      tmLightbox.querySelector('.tm-close').addEventListener('click', closeTimeMachine);
+    }
+
+    // Build frame list: current live photo first (newest), then history oldest->newest reversed so index 0 = now
+    const liveImg = card.querySelector('.card-photo img');
+    const frames = [];
+    if (liveImg && liveImg.src) frames.push({ date: 'now', url: liveImg.src, label: 'NOW' });
+    for (let i = history.length - 1; i >= 0; i--) frames.push(history[i]);
+
+    let idx = 0;
+    const stackWrap = tmLightbox.querySelector('.tm-stack-wrap');
+    const filmstrip = tmLightbox.querySelector('.tm-filmstrip');
+    const rail = tmLightbox.querySelector('.tm-rail');
+    const dateLabel = tmLightbox.querySelector('.tm-date-label');
+
+    stackWrap.innerHTML = '';
+    filmstrip.innerHTML = '';
+    rail.innerHTML = '';
+
+    frames.forEach(function(f, i) {
+      const frame = document.createElement('div');
+      frame.className = 'tm-frame';
+      frame.innerHTML = '<img src="' + f.url + '" alt="">';
+      frame.addEventListener('click', function(e) { e.stopPropagation(); if (i !== idx) { idx = i; render(); } });
+      stackWrap.appendChild(frame);
+
+      const fsFrame = frame.cloneNode(true);
+      filmstrip.appendChild(fsFrame);
+
+      const dot = document.createElement('div');
+      dot.className = 'tm-dot';
+      dot.addEventListener('click', function() { idx = i; render(); });
+      rail.appendChild(dot);
+    });
+
+    function render() {
+      const stackFrames = stackWrap.querySelectorAll('.tm-frame');
+      stackFrames.forEach(function(el, i) {
+        const depth = i - idx;
+        el.setAttribute('data-depth', depth < 0 ? 'hidden' : (depth > 3 ? 'hidden' : depth));
+      });
+      rail.querySelectorAll('.tm-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+      const f = frames[idx];
+      if (f.date === 'now') {
+        dateLabel.textContent = 'NOW';
+      } else {
+        const win = window.bloomState.parseBloomWindow(getFloweringText(card));
+        const [y, mo] = f.date.split('-');
+        const monthIdx = parseInt(mo, 10) - 1;
+        const names = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+        const flowering = win ? window.bloomState.isFloweringNow(win, new Date(parseInt(y,10), monthIdx, 1)) : false;
+        dateLabel.textContent = names[monthIdx] + '\u00A0\u00A0\u00A0' + y + (flowering ? '  ·  FLOWERING' : '');
+      }
+      const fsChildren = filmstrip.querySelectorAll('.tm-frame');
+      if (fsChildren[idx]) fsChildren[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+    render();
+
+    function getFloweringText(card) {
+      let text = null;
+      card.querySelectorAll('.aloe-stat, .aloe-stat.full').forEach(function(row) {
+        const lbl = row.querySelector('.stat-lbl');
+        if (lbl && lbl.textContent.trim() === 'Flowering season') {
+          const val = row.querySelector('.stat-val');
+          if (val) text = val.textContent;
+        }
+      });
+      return text;
+    }
+
+    function onWheel(e) {
+      e.preventDefault();
+      if (e.deltaY > 0 && idx < frames.length - 1) { idx++; render(); }
+      else if (e.deltaY < 0 && idx > 0) { idx--; render(); }
+    }
+    function onKey(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (idx < frames.length - 1) { idx++; render(); } }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (idx > 0) { idx--; render(); } }
+      else if (e.key === 'Escape') { closeTimeMachine(); }
+    }
+    tmLightbox._onWheel = onWheel;
+    tmLightbox._onKey = onKey;
+    tmLightbox.addEventListener('wheel', onWheel, { passive: false });
+    document.addEventListener('keydown', onKey);
+
+    tmLightbox.classList.add('open');
+  }
+
+  function closeTimeMachine() {
+    if (!tmLightbox) return;
+    tmLightbox.classList.remove('open');
+    tmLightbox.removeEventListener('wheel', tmLightbox._onWheel);
+    document.removeEventListener('keydown', tmLightbox._onKey);
+  }
+
 })();
 </script>
 
