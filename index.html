@@ -595,9 +595,11 @@ body.dark .care-log-detail { color: #a8a7a7; }
 
 .filter-btn.fb-io.active { background: var(--both); border-color: var(--both); }
 
-.plant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 28px; }
+.plant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 28px; align-items: start; }
 
-.plant-card { background: var(--white); border: none; border-radius: 25px; overflow: hidden; box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s; }
+.plant-card { background: var(--white); border: none; border-radius: 25px; overflow: hidden; box-shadow: var(--shadow); transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), box-shadow 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.7s cubic-bezier(0.16,1,0.3,1); }
+.plant-grid.focus-mode .plant-card:not(.expanded) { filter: blur(30px) brightness(0.75); opacity: 0.7; }
+.plant-grid.focus-mode .plant-card.expanded { transform: scale(1.015); box-shadow: 0 24px 64px rgba(0,0,0,0.28); position: relative; z-index: 2; }
 
 .plant-card:hover { transform: translateY(-3px); box-shadow: rgba(0, 0, 0, 0.12) 0px 8px 28px; }
 
@@ -617,7 +619,10 @@ body.dark .care-log-detail { color: #a8a7a7; }
 
 .acc-may26 { background: #cc527a; }
 
-.card-head { padding: 28px 28px 22px; border-bottom: 0.5px solid var(--rule); background: var(--card-bg); }
+.card-head { padding: 28px 28px 22px; border-bottom: 0.5px solid var(--rule); background: var(--card-bg); cursor: pointer; user-select: none; position: relative; transition: border-color 0.7s ease; }
+.plant-card:not(.expanded) .card-head { border-bottom-color: transparent; }
+.card-expand-chevron { position: absolute; top: 28px; right: 28px; font-size: 16px; color: var(--annotation); transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+.plant-card.expanded .card-expand-chevron { transform: rotate(180deg); }
 
 .card-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
 
@@ -824,7 +829,8 @@ body.dark .plant-card[data-group="hybrid"]   .card-photo.pending { background: #
 
 .card-origin { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 400; letter-spacing: 0.06em; color: #888888; margin-top: 4px; }
 
-.card-body { padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 22px; width: 100%; }
+.card-body { padding: 0 28px; max-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 22px; width: 100%; transition: max-height 1.1s cubic-bezier(0.22,1,0.36,1), padding 1.1s cubic-bezier(0.22,1,0.36,1); }
+.plant-card.expanded .card-body { padding: 24px 28px 28px; max-height: 2000px; }
 
 .card-desc { font-size: 12px; color: var(--text-other); line-height: 1.7; font-style: normal; font-weight: 300; }
 
@@ -1218,7 +1224,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
 <div class="bento-grid">
 
   <!-- CARD 1: ALERTS -->
-  <div class="bento-card bento-alerts" onclick="document.querySelector('.tab-btn.tab-aloes').click();setTimeout(function(){document.getElementById('alerts-aloes').scrollIntoView({behavior:'smooth'})},200)">
+  <div class="bento-card bento-alerts" onclick="document.querySelector('.tab-btn.tab-week').click();setTimeout(function(){document.getElementById('alerts-week').scrollIntoView({behavior:'smooth'})},200)">
     <div>
       <i class="ph ph-warning bento-card-icon"></i>
       <div class="bento-card-label">Priority</div>
@@ -1236,11 +1242,11 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
   </div>
 
   <!-- CARD 2: THIS WEEK -->
-  <div class="bento-card bento-week" onclick="document.querySelector('.tab-btn.tab-week').click()">
+  <div class="bento-card bento-week" onclick="document.querySelector('.tab-btn.tab-week').click();setTimeout(function(){document.getElementById('this-week-section').scrollIntoView({behavior:'smooth'})},200)">
     <div>
       <i class="ph ph-list-checks bento-card-icon"></i>
       <div class="bento-card-label">This Week</div>
-      <div class="bento-card-title">March<br><span style="opacity:.45;font-size:.6em;letter-spacing:.04em">WEEK 3</span></div>
+      <div class="bento-card-title"><span id="bento-week-month">March</span><br><span id="bento-week-num" style="opacity:.45;font-size:.6em;letter-spacing:.04em">WEEK 3</span></div>
       <div class="bento-week-tasks">
         <div class="bento-week-task"><strong>Pyrostegia venusta</strong> — train tendrils</div>
         <div class="bento-week-task"><strong>Batch 2 (14×)</strong> — check root escape</div>
@@ -1254,11 +1260,11 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
   </div>
 
   <!-- CARD 3: MASTER CALENDAR -->
-  <div class="bento-card bento-cal" onclick="document.querySelector('.tab-btn.tab-master-cal').click()">
+  <div class="bento-card bento-cal" onclick="document.querySelector('.tab-btn.tab-master-cal').click();setTimeout(function(){document.getElementById('pane-master-cal').scrollIntoView({behavior:'smooth'})},200)">
     <div>
       <i class="ph ph-calendar-dots bento-card-icon"></i>
       <div class="bento-card-label">Master Calendar</div>
-      <div class="bento-cal-month" id="bento-month-name">April</div>
+      <div class="bento-cal-month" id="bento-month-name">Calendar</div>
       <div class="bento-cal-dots" id="bento-cal-dots"></div>
     </div>
     <div class="bento-card-footer">
@@ -1317,7 +1323,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
     </div>
   </div>
 
-  <section class="section">
+  <section class="section" id="this-week-section">
     <h2 class="section-title">This Week <small>March · Week 3</small></h2>
     <div class="week-grid">
 
@@ -1560,7 +1566,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge arid">Arabian / Arid</span>
         <span class="badge zone">Zone A</span>
@@ -1600,7 +1606,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge arid">Arabian / Arid</span>
         <span class="badge zone">Zone A</span>
@@ -1640,7 +1646,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -1680,7 +1686,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -1720,7 +1726,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge arid">Arabian / Arid</span>
         <span class="badge zone">Zone A</span>
@@ -1760,7 +1766,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge hybrid">Hybrid</span>
         <span class="badge zone">Zone A–B</span>
@@ -1800,7 +1806,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge hybrid">Hybrid</span>
         <span class="badge zone">Zone A–B</span>
@@ -1840,7 +1846,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b1"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -1880,7 +1886,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -1920,7 +1926,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -1960,7 +1966,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge arid">Arabian / Arid</span>
         <span class="badge zone">Zone A</span>
@@ -2000,7 +2006,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2040,7 +2046,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2080,7 +2086,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2120,7 +2126,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge arid">Arabian / Arid</span>
         <span class="badge zone">Zone A</span>
@@ -2160,7 +2166,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2200,7 +2206,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2240,7 +2246,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2280,7 +2286,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2320,7 +2326,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-b2"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2360,7 +2366,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-bnew"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -2400,7 +2406,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-bnew"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2440,7 +2446,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-bnew"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2480,7 +2486,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-bnew"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2520,7 +2526,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -2553,7 +2559,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge hybrid">Hybrid</span>
         <span class="badge zone">Zone A–B</span>
@@ -2586,7 +2592,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -2619,7 +2625,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -2652,7 +2658,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2685,7 +2691,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2718,7 +2724,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge hybrid">Hybrid</span>
         <span class="badge zone">Zone A–B</span>
@@ -2751,7 +2757,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2784,7 +2790,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge arid">Arabian / Arid</span>
         <span class="badge zone">Zone A</span>
@@ -2817,7 +2823,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -2850,7 +2856,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -2883,7 +2889,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge hybrid">Hybrid</span>
         <span class="badge zone">Zone A–B</span>
@@ -2916,7 +2922,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge savannah">Savannah / Ethiopian</span>
         <span class="badge zone">Zone B</span>
@@ -2949,7 +2955,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge arid">Arabian / Arid</span>
         <span class="badge zone">Zone A</span>
@@ -2982,7 +2988,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
     <div class="card-accent acc-may26"></div>
-    <div class="card-head">
+    <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
       <div class="card-badges">
         <span class="badge rocky">SA Rocky / Highland</span>
         <span class="badge zone">Zone B</span>
@@ -3089,7 +3095,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -3142,7 +3148,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Blue Succulent</span></div>
           <div class="card-common">Agave tequilana</div>
           <div class="card-scientific">Tequila Agave</div>
@@ -3186,7 +3192,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Money Tree Succulent</span></div>
           <div class="card-common">Crassula ovata</div>
           <div class="card-scientific">Jade Plant</div>
@@ -3230,7 +3236,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Long Spike Look</span></div>
           <div class="card-common">Sansevieria cylindrica</div>
           <div class="card-scientific">African Spear</div>
@@ -3274,7 +3280,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Stick Plant</span></div>
           <div class="card-common">Euphorbia tirucalli</div>
           <div class="card-scientific">Pencil Cactus</div>
@@ -3318,7 +3324,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-new">New</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -3408,7 +3414,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Under-canopy Colony</span></div>
           <div class="card-common">Farfugium japonicum</div>
           <div class="card-scientific">Giant Leopard Plant</div>
@@ -3451,7 +3457,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Dark Green Leaf</span></div>
           <div class="card-common">Alocasia 'Regal Shield'</div>
           <div class="card-scientific">Regal Shield Alocasia</div>
@@ -3495,7 +3501,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Shade Hardy</span></div>
           <div class="card-common">Aspidistra elatior</div>
           <div class="card-scientific">Cast Iron Plant</div>
@@ -3538,7 +3544,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Native Shrubby</span></div>
           <div class="card-common">Ruscus aculeatus</div>
           <div class="card-scientific">Butcher's Broom</div>
@@ -3581,7 +3587,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Large Climber</span></div>
           <div class="card-common">Monstera deliciosa</div>
           <div class="card-scientific">Swiss Cheese Plant</div>
@@ -3625,7 +3631,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Variegated</span></div>
           <div class="card-common">Monstera deliciosa 'Albo'</div>
           <div class="card-scientific">Variegated Monstera</div>
@@ -3669,7 +3675,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Compact Lobed</span></div>
           <div class="card-common">Thaumatophyllum xanadu</div>
           <div class="card-scientific">Xanadu</div>
@@ -3713,7 +3719,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Large Leaf</span></div>
           <div class="card-common">Thaumatophyllum bipinnatifidum</div>
           <div class="card-scientific">Tree Philodendron</div>
@@ -3757,7 +3763,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Vining</span></div>
           <div class="card-common">Philodendron hederaceum</div>
           <div class="card-scientific">Philodendron Climber</div>
@@ -3801,7 +3807,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Common Orange</span></div>
           <div class="card-common">Strelitzia reginae</div>
           <div class="card-scientific">Bird of Paradise</div>
@@ -3844,7 +3850,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Spiky Rare Type</span></div>
           <div class="card-common">Strelitzia juncea</div>
           <div class="card-scientific">Narrow-leaf Strelitzia</div>
@@ -3887,7 +3893,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Large Leaf Rubber</span></div>
           <div class="card-common">Ficus lyrata</div>
           <div class="card-scientific">Fiddle Leaf Fig</div>
@@ -3931,7 +3937,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Yellow Veins</span></div>
           <div class="card-common">Ficus elastica 'Doescheri'</div>
           <div class="card-scientific">Variegated Rubber</div>
@@ -3975,7 +3981,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Low Foliage</span></div>
           <div class="card-common">Maranta leuconeura</div>
           <div class="card-scientific">Prayer Plant</div>
@@ -4019,7 +4025,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Brazilian Giant</span></div>
           <div class="card-common">Dichorisandra thyrsiflora</div>
           <div class="card-scientific">Blue Ginger</div>
@@ -4062,7 +4068,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fragrant Yellow</span></div>
           <div class="card-common">Hedychium gardnerianum</div>
           <div class="card-scientific">Kahili Ginger</div>
@@ -4106,7 +4112,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Striped Foliage</span></div>
           <div class="card-common">Alpinia zerumbet 'Variegata'</div>
           <div class="card-scientific">Variegated Shell Ginger</div>
@@ -4149,7 +4155,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Brazilian "Charuto"</span></div>
           <div class="card-common">Calathea lutea</div>
           <div class="card-scientific">Cigar Flower</div>
@@ -4192,7 +4198,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Red Bracts</span></div>
           <div class="card-common">Megaskepasma erythrochlamys</div>
           <div class="card-scientific">Brazilian Red Cloak</div>
@@ -4235,7 +4241,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Frangipani</span></div>
           <div class="card-common">Plumeria rubra</div>
           <div class="card-scientific">Plumeria</div>
@@ -4279,7 +4285,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Grass-like Iris</span></div>
           <div class="card-common">Dietes iridioides</div>
           <div class="card-scientific">African Iris</div>
@@ -4322,7 +4328,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fasulata Bicolor</span></div>
           <div class="card-common">Fascicularia bicolor</div>
           <div class="card-scientific">Bicolor Bromeliad</div>
@@ -4365,7 +4371,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Giant White Type</span></div>
           <div class="card-common">Strelitzia nicolai</div>
           <div class="card-scientific">Bird of Paradise Tree</div>
@@ -4408,7 +4414,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Under-canopy</span></div>
           <div class="card-common">Pandanus utilis</div>
           <div class="card-scientific">Screw Pine</div>
@@ -4466,7 +4472,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Ornamental Grass</span></div>
           <div class="card-common">Pennisetum alopecuroides</div>
           <div class="card-scientific">Dwarf Fountain Grass</div>
@@ -4509,7 +4515,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fluffy / Thin Hair</span></div>
           <div class="card-common">Nassella tenuissima</div>
           <div class="card-scientific">Mexican Feather Grass</div>
@@ -4552,7 +4558,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Small Black Grass</span></div>
           <div class="card-common">Ophiopogon planiscapus 'Nigrescens'</div>
           <div class="card-scientific">Black Mondo Grass</div>
@@ -4595,7 +4601,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Red-tipped</span></div>
           <div class="card-common">Imperata cylindrica 'Rubra'</div>
           <div class="card-scientific">Japanese Blood Grass</div>
@@ -4639,7 +4645,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Blue Mounds</span></div>
           <div class="card-common">Festuca glauca</div>
           <div class="card-scientific">Blue Fescue</div>
@@ -4682,7 +4688,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Striped Grass</span></div>
           <div class="card-common">Miscanthus sinensis 'Zebrinus'</div>
           <div class="card-scientific">Zebra Grass</div>
@@ -4725,7 +4731,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Pink Clouds</span></div>
           <div class="card-common">Muhlenbergia capillaris</div>
           <div class="card-scientific">Purple Muhly Grass</div>
@@ -4782,7 +4788,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A5C7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Nest Corner</span></div>
           <div class="card-common">Asplenium nidus</div>
           <div class="card-scientific">Birds Nest Fern</div>
@@ -4826,7 +4832,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A5C7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Tall Vertical</span></div>
           <div class="card-common">Matteuccia struthiopteris</div>
           <div class="card-scientific">Ostrich Fern</div>
@@ -4869,7 +4875,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A5C7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Fuzzy Rhizomes</span></div>
           <div class="card-common">Davallia fejeensis</div>
           <div class="card-scientific">Rabbit's Foot Fern</div>
@@ -4938,7 +4944,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5C8A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · Established colony</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -4992,7 +4998,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#1A7A5A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · Colony ~50 plants</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -5635,7 +5641,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent acc-existing"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · 10+ yrs</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -5688,7 +5694,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent acc-existing"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · 2 yrs ×2 + 1 yr ×1</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -5741,7 +5747,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent acc-new"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-new">New · Planted Mar 2026</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -5794,7 +5800,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent acc-new"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-new">New · Still in pot</span>
             <span class="badge badge-both">Indoor · Outdoor</span>
@@ -5847,7 +5853,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent acc-existing"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · 2 yrs · South wall</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -5900,7 +5906,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent acc-existing"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · 10+ yrs · Established</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -5953,7 +5959,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent acc-existing"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · 10+ yrs · Established</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -6180,7 +6186,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · Established</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -6233,7 +6239,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#8B5E3C"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · Established ×2</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -6285,7 +6291,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#cc527a"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · Established ×3</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -6344,7 +6350,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Macaronesian Native</span></div>
           <div class="card-common">Dracaena draco</div>
           <div class="card-scientific">Dragon Tree</div>
@@ -6388,7 +6394,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fern-like Foliage</span></div>
           <div class="card-common">Albizia julibrissin</div>
           <div class="card-scientific">Persian Silk Tree</div>
@@ -6431,7 +6437,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Red Spikes</span></div>
           <div class="card-common">Callistemon spp.</div>
           <div class="card-scientific">Bottlebrush Tree</div>
@@ -6475,7 +6481,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Heart-shaped Leaf</span></div>
           <div class="card-common">Catalpa bignonioides</div>
           <div class="card-scientific">Catalpa</div>
@@ -6518,7 +6524,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Flowering Bark</span></div>
           <div class="card-common">Lagerstroemia indica</div>
           <div class="card-scientific">Crepe Myrtle</div>
@@ -6562,7 +6568,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Eriobotrya japonica</div>
           <div class="card-scientific">Loquat (Nêspera)</div>
@@ -6605,7 +6611,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Punica granatum</div>
           <div class="card-scientific">Pomegranate</div>
@@ -6648,7 +6654,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Citrus reticulata</div>
           <div class="card-scientific">Mandarin</div>
@@ -6691,7 +6697,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Citrus × sinensis</div>
           <div class="card-scientific">Orange Tree</div>
@@ -6734,7 +6740,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New Addition</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Citrus limon</div>
           <div class="card-scientific">Lemon Tree</div>
@@ -6778,7 +6784,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Persea americana</div>
           <div class="card-scientific">Avocado</div>
@@ -6822,7 +6828,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Mangifera indica</div>
           <div class="card-scientific">Mango</div>
@@ -6866,7 +6872,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Portuguese Variety</span></div>
           <div class="card-common">Prunus domestica</div>
           <div class="card-scientific">Yellow Plum</div>
@@ -6909,7 +6915,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fruit Tree</span></div>
           <div class="card-common">Malus domestica</div>
           <div class="card-scientific">Apple</div>
@@ -6953,7 +6959,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Hardy Shrub</span></div>
           <div class="card-common">Nerium oleander</div>
           <div class="card-scientific">Oleander</div>
@@ -6997,7 +7003,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Black Sambuca</span></div>
           <div class="card-common">Sambucus nigra 'Black Lace'</div>
           <div class="card-scientific">Black Elderberry</div>
@@ -7041,7 +7047,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Shade Flowering</span></div>
           <div class="card-common">Camellia japonica</div>
           <div class="card-scientific">Camellias</div>
@@ -7085,7 +7091,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Coastal Flowering</span></div>
           <div class="card-common">Hydrangea macrophylla</div>
           <div class="card-scientific">Hydrangeas</div>
@@ -7129,7 +7135,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Climber &amp; Classic</span></div>
           <div class="card-common">Rosa spp.</div>
           <div class="card-scientific">Roses</div>
@@ -7172,7 +7178,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Coastal Purple</span></div>
           <div class="card-common">Echium candicans</div>
           <div class="card-scientific">Pride of Madeira</div>
@@ -7216,7 +7222,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Tall Spire</span></div>
           <div class="card-common">Echium pininana</div>
           <div class="card-scientific">Giant Honeywort</div>
@@ -7260,7 +7266,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#4A7A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Red Spire</span></div>
           <div class="card-common">Echium wildpretii</div>
           <div class="card-scientific">Tower of Jewels</div>
@@ -7364,7 +7370,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A7A6A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Silver Architectural</span></div>
           <div class="card-common">Bismarckia nobilis</div>
           <div class="card-scientific">Bismarck Palm</div>
@@ -7408,7 +7414,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A7A6A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Canary Island Palm</span></div>
           <div class="card-common">Phoenix canariensis</div>
           <div class="card-scientific">Phoenix Palm</div>
@@ -7452,7 +7458,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A7A6A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Clumping</span></div>
           <div class="card-common">Chamaedorea seifrizii</div>
           <div class="card-scientific">Bamboo Palm</div>
@@ -7495,7 +7501,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A7A6A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Portuguese Native</span></div>
           <div class="card-common">Chamaerops humilis</div>
           <div class="card-scientific">European Fan Palm</div>
@@ -7539,7 +7545,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A7A6A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Brazilian Native</span></div>
           <div class="card-common">Syagrus glaucescens</div>
           <div class="card-scientific">Capim Palm</div>
@@ -7596,7 +7602,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Spineless Succulent</span></div>
           <div class="card-common">Agave attenuata</div>
           <div class="card-scientific">Fox Tail Agave</div>
@@ -7639,7 +7645,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Large Rosette</span></div>
           <div class="card-common">Furcraea foetida</div>
           <div class="card-scientific">Mauritius Hemp</div>
@@ -7682,7 +7688,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Local Portuguese Yucca</span></div>
           <div class="card-common">Yucca aloifolia</div>
           <div class="card-scientific">Spanish Dagger</div>
@@ -7726,7 +7732,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Architectural</span></div>
           <div class="card-common">Yucca gloriosa</div>
           <div class="card-scientific">Moundlily Yucca</div>
@@ -7769,7 +7775,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Upright Spike</span></div>
           <div class="card-common">Dracaena trifasciata</div>
           <div class="card-scientific">Snake Plant</div>
@@ -7813,7 +7819,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#D4820A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Trailing Succulent</span></div>
           <div class="card-common">Senecio jacobsenii</div>
           <div class="card-scientific">Daisy Climber</div>
@@ -7871,7 +7877,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Under-canopy Colony</span></div>
           <div class="card-common">Farfugium japonicum</div>
           <div class="card-scientific">Giant Leopard Plant</div>
@@ -7914,7 +7920,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Dark Green Leaf</span></div>
           <div class="card-common">Alocasia 'Regal Shield'</div>
           <div class="card-scientific">Regal Shield Alocasia</div>
@@ -7958,7 +7964,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Shade Hardy</span></div>
           <div class="card-common">Aspidistra elatior</div>
           <div class="card-scientific">Cast Iron Plant</div>
@@ -8001,7 +8007,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Native Shrubby</span></div>
           <div class="card-common">Ruscus aculeatus</div>
           <div class="card-scientific">Butcher's Broom</div>
@@ -8044,7 +8050,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Large Climber</span></div>
           <div class="card-common">Monstera deliciosa</div>
           <div class="card-scientific">Swiss Cheese Plant</div>
@@ -8088,7 +8094,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Variegated</span></div>
           <div class="card-common">Monstera deliciosa 'Albo'</div>
           <div class="card-scientific">Variegated Monstera</div>
@@ -8132,7 +8138,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Compact Lobed</span></div>
           <div class="card-common">Thaumatophyllum xanadu</div>
           <div class="card-scientific">Xanadu</div>
@@ -8176,7 +8182,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Large Leaf</span></div>
           <div class="card-common">Thaumatophyllum bipinnatifidum</div>
           <div class="card-scientific">Tree Philodendron</div>
@@ -8220,7 +8226,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Vining</span></div>
           <div class="card-common">Philodendron hederaceum</div>
           <div class="card-scientific">Philodendron Climber</div>
@@ -8264,7 +8270,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Common Orange</span></div>
           <div class="card-common">Strelitzia reginae</div>
           <div class="card-scientific">Bird of Paradise</div>
@@ -8307,7 +8313,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Spiky Rare Type</span></div>
           <div class="card-common">Strelitzia juncea</div>
           <div class="card-scientific">Narrow-leaf Strelitzia</div>
@@ -8350,7 +8356,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Large Leaf Rubber</span></div>
           <div class="card-common">Ficus lyrata</div>
           <div class="card-scientific">Fiddle Leaf Fig</div>
@@ -8394,7 +8400,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Yellow Veins</span></div>
           <div class="card-common">Ficus elastica 'Doescheri'</div>
           <div class="card-scientific">Variegated Rubber</div>
@@ -8438,7 +8444,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Low Foliage</span></div>
           <div class="card-common">Maranta leuconeura</div>
           <div class="card-scientific">Prayer Plant</div>
@@ -8482,7 +8488,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Brazilian Giant</span></div>
           <div class="card-common">Dichorisandra thyrsiflora</div>
           <div class="card-scientific">Blue Ginger</div>
@@ -8525,7 +8531,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fragrant Yellow</span></div>
           <div class="card-common">Hedychium gardnerianum</div>
           <div class="card-scientific">Kahili Ginger</div>
@@ -8569,7 +8575,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Striped Foliage</span></div>
           <div class="card-common">Alpinia zerumbet 'Variegata'</div>
           <div class="card-scientific">Variegated Shell Ginger</div>
@@ -8612,7 +8618,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Brazilian "Charuto"</span></div>
           <div class="card-common">Calathea lutea</div>
           <div class="card-scientific">Cigar Flower</div>
@@ -8655,7 +8661,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Red Bracts</span></div>
           <div class="card-common">Megaskepasma erythrochlamys</div>
           <div class="card-scientific">Brazilian Red Cloak</div>
@@ -8698,7 +8704,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Frangipani</span></div>
           <div class="card-common">Plumeria rubra</div>
           <div class="card-scientific">Plumeria</div>
@@ -8742,7 +8748,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Grass-like Iris</span></div>
           <div class="card-common">Dietes iridioides</div>
           <div class="card-scientific">African Iris</div>
@@ -8785,7 +8791,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fasulata Bicolor</span></div>
           <div class="card-common">Fascicularia bicolor</div>
           <div class="card-scientific">Bicolor Bromeliad</div>
@@ -8828,7 +8834,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Giant White Type</span></div>
           <div class="card-common">Strelitzia nicolai</div>
           <div class="card-scientific">Bird of Paradise Tree</div>
@@ -8871,7 +8877,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#7A3A7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Under-canopy</span></div>
           <div class="card-common">Pandanus utilis</div>
           <div class="card-scientific">Screw Pine</div>
@@ -8929,7 +8935,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Ornamental Grass</span></div>
           <div class="card-common">Pennisetum alopecuroides</div>
           <div class="card-scientific">Dwarf Fountain Grass</div>
@@ -8972,7 +8978,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Fluffy / Thin Hair</span></div>
           <div class="card-common">Nassella tenuissima</div>
           <div class="card-scientific">Mexican Feather Grass</div>
@@ -9015,7 +9021,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Small Black Grass</span></div>
           <div class="card-common">Ophiopogon planiscapus 'Nigrescens'</div>
           <div class="card-scientific">Black Mondo Grass</div>
@@ -9058,7 +9064,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Red-tipped</span></div>
           <div class="card-common">Imperata cylindrica 'Rubra'</div>
           <div class="card-scientific">Japanese Blood Grass</div>
@@ -9102,7 +9108,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Blue Mounds</span></div>
           <div class="card-common">Festuca glauca</div>
           <div class="card-scientific">Blue Fescue</div>
@@ -9145,7 +9151,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Striped Grass</span></div>
           <div class="card-common">Miscanthus sinensis 'Zebrinus'</div>
           <div class="card-scientific">Zebra Grass</div>
@@ -9188,7 +9194,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5A7A2A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Pink Clouds</span></div>
           <div class="card-common">Muhlenbergia capillaris</div>
           <div class="card-scientific">Purple Muhly Grass</div>
@@ -9245,7 +9251,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A5C7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Nest Corner</span></div>
           <div class="card-common">Asplenium nidus</div>
           <div class="card-scientific">Birds Nest Fern</div>
@@ -9289,7 +9295,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A5C7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-outdoor">Outdoor</span><span class="badge badge-type">Tall Vertical</span></div>
           <div class="card-common">Matteuccia struthiopteris</div>
           <div class="card-scientific">Ostrich Fern</div>
@@ -9332,7 +9338,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#2A5C7A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges"><span class="badge badge-new">New</span><span class="badge badge-both">Indoor · Outdoor</span><span class="badge badge-type">Fuzzy Rhizomes</span></div>
           <div class="card-common">Davallia fejeensis</div>
           <div class="card-scientific">Rabbit's Foot Fern</div>
@@ -9401,7 +9407,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#5C8A3A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · Established colony</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -9455,7 +9461,7 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
       </div>
     </div>
         <div class="card-accent" style="background:#1A7A5A"></div>
-        <div class="card-head">
+        <div class="card-head"><i class="ph ph-caret-down card-expand-chevron"></i>
           <div class="card-badges">
             <span class="badge badge-existing">Existing · Colony ~50 plants</span>
             <span class="badge badge-outdoor">Outdoor</span>
@@ -9604,13 +9610,14 @@ document.addEventListener('DOMContentLoaded', function() {
   var toggleBtn   = document.getElementById('theme-toggle');
   var toggleIcon  = document.getElementById('toggle-icon');
   var toggleLabel = document.getElementById('toggle-label');
-  var isDark = localStorage.getItem('maravila-theme') === 'dark';
+  var isDark = false;
+  try { isDark = localStorage.getItem('maravila-theme') === 'dark'; } catch (e) { /* storage blocked (e.g. Safari Private Browsing) — default to light, don't let it break the rest of the page */ }
 
   function applyTheme(dark) {
     document.body.classList.toggle('dark', dark);
     toggleIcon.className  = dark ? 'ph ph-sun toggle-icon' : 'ph ph-moon toggle-icon';
     toggleLabel.textContent = dark ? 'Bright' : 'Dark';
-    localStorage.setItem('maravila-theme', dark ? 'dark' : 'light');
+    try { localStorage.setItem('maravila-theme', dark ? 'dark' : 'light'); } catch (e) { /* storage blocked — theme just won't persist across visits */ }
   }
 
   applyTheme(isDark);
@@ -10196,9 +10203,10 @@ document.addEventListener('DOMContentLoaded', function() {
     var html = '';
     for (var si = 0; si < MCD.length; si++) {
       var section = MCD[si];
+      var sectionPlants = section.plants || [];
       var sectionHtml = '';
-      for (var pi = 0; pi < section.plants.length; pi++) {
-        var plant = section.plants[pi];
+      for (var pi = 0; pi < sectionPlants.length; pi++) {
+        var plant = sectionPlants[pi];
         var evts = (plant.events[month] || []).filter(function(e) {
           var layer = e.l === 'bloom' ? 'bloom' : e.l;
           return activeLayers.has(layer);
@@ -10265,6 +10273,33 @@ document.addEventListener('DOMContentLoaded', function() {
     header.addEventListener('click', function() {
       header.closest('.notes-banner').classList.toggle('open');
     });
+  });
+
+  // ── 2b. PLANT CARD EXPAND/COLLAPSE ──────────────────────
+  document.querySelectorAll('.card-head').forEach(function(head) {
+    head.addEventListener('click', function() {
+      var card = head.closest('.plant-card');
+      var grid = card.parentElement;
+      var isExpanded = card.classList.contains('expanded');
+      if (!isExpanded && grid) {
+        var anotherCardOpen = grid.querySelector('.plant-card.expanded');
+        if (anotherCardOpen) return; // another card is already open somewhere in this grid — do nothing, keep it folded
+      }
+      card.classList.toggle('expanded');
+      if (grid) {
+        grid.classList.toggle('focus-mode', !!grid.querySelector('.plant-card.expanded'));
+      }
+    });
+  });
+
+  // ── 2c. CLICK OUTSIDE TO EXIT FOCUS MODE ────────────────
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.card-head')) return;
+    if (e.target.closest('.plant-card.expanded')) return;
+    var anyExpanded = document.querySelectorAll('.plant-card.expanded');
+    if (!anyExpanded.length) return;
+    anyExpanded.forEach(function(card) { card.classList.remove('expanded'); });
+    document.querySelectorAll('.plant-grid.focus-mode').forEach(function(g) { g.classList.remove('focus-mode'); });
   });
 
   // ── 3. ALOE FILTER ───────────────────────────────────────
@@ -10357,6 +10392,7 @@ document.addEventListener('DOMContentLoaded', function() {
       titleEl.innerHTML = MONTHS[month] +
         (isCurrent ? ' <span style="color:var(--heading)">\u25b2 Current</span>' : '');
     }
+    renderTitle();
 
     if (btns[0]) btns[0].addEventListener('click', function() { month = (month + 11) % 12; renderTitle(); });
     if (btns[1]) btns[1].addEventListener('click', function() { month = (month + 1)  % 12; renderTitle(); });
@@ -10364,13 +10400,22 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
+  // ── BENTO WEEK LABEL ─────────────────────────────────────
+  (function() {
+    var weekMonthEl = document.getElementById('bento-week-month');
+    var weekNumEl = document.getElementById('bento-week-num');
+    if (!weekMonthEl || !weekNumEl) return;
+    weekMonthEl.textContent = MONTHS[NOW.getMonth()];
+    var weekOfMonth = Math.ceil(NOW.getDate() / 7);
+    weekNumEl.textContent = 'WEEK ' + weekOfMonth;
+  })();
+
   // ── BENTO CALENDAR DOTS ─────────────────────────────────
   (function() {
     var monthEl = document.getElementById('bento-month-name');
     var dotsEl  = document.getElementById('bento-cal-dots');
     if (!monthEl || !dotsEl) return;
     var m = NOW.getMonth();
-    monthEl.textContent = MONTHS[m];
     var colours = {
       bloom: '#e8175d', 'bloom-p': '#cc527a',
       prune: '#4A7A3A', feed: '#D4820A',
@@ -10378,7 +10423,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     var seen = {};
     MCD.forEach(function(sec) {
-      sec.plants.forEach(function(plant) {
+      (sec.plants || []).forEach(function(plant) {
         (plant.events[m] || []).forEach(function(evt) {
           var key = evt.t;
           if (!seen[key]) {
