@@ -710,6 +710,7 @@ body.dark .care-log-detail { color: #a8a7a7; }
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), filter 0.45s, opacity 0.45s;
   cursor: pointer;
+  transform: translateZ(0); -webkit-transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; will-change: transform;
 }
 .tm-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .tm-frame[data-depth="0"] { transform: translateZ(0) scale(1); filter: none; opacity: 1; z-index: 10; }
@@ -10659,7 +10660,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const liveImg = card.querySelector('.card-photo img');
     const hasLivePhoto = photoWrap && !photoWrap.classList.contains('pending') && liveImg && liveImg.naturalWidth > 0;
     const frames = [];
-    if (hasLivePhoto) frames.push({ date: 'now', url: liveImg.src, label: 'NOW' });
+    if (hasLivePhoto) frames.push({ date: 'now', url: liveImg.src, label: 'MATURE STATE' });
     for (let i = history.length - 1; i >= 0; i--) frames.push(history[i]);
 
     let idx = 0;
@@ -10697,7 +10698,7 @@ document.addEventListener('DOMContentLoaded', function() {
       rail.querySelectorAll('.tm-line').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
       const f = frames[idx];
       if (f.date === 'now') {
-        dateLabel.textContent = 'NOW';
+        dateLabel.textContent = 'MATURE STATE';
       } else {
         const [y, mo] = f.date.split('-');
         const monthIdx = parseInt(mo, 10) - 1;
@@ -10709,10 +10710,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     render();
 
+    var wheelLocked = false;
     function onWheel(e) {
       e.preventDefault();
-      if (e.deltaY > 0 && idx < frames.length - 1) { idx++; render(); }
-      else if (e.deltaY < 0 && idx > 0) { idx--; render(); }
+      if (wheelLocked) return;
+      var moved = false;
+      if (e.deltaY > 0 && idx < frames.length - 1) { idx++; moved = true; }
+      else if (e.deltaY < 0 && idx > 0) { idx--; moved = true; }
+      if (moved) {
+        render();
+        wheelLocked = true;
+        setTimeout(function() { wheelLocked = false; }, 450);
+      }
     }
     function onKey(e) {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (idx < frames.length - 1) { idx++; render(); } }
