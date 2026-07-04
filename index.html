@@ -112,23 +112,24 @@ body.dark .card-origin .ph { color: var(--card-bg); -webkit-text-stroke: 1px #55
 /* ── DARK MODE TOGGLE ──────────────────────────────────── */
 .theme-toggle {
   position: fixed;
-  top: 16px;
+  top: 8px;
   right: 20px;
   z-index: 9999;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   background: var(--white);
   border: 1px solid var(--rule);
-  border-radius: 30px;
-  padding: 6px 12px 6px 8px;
+  border-radius: 16px;
+  padding: 8px 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,.12);
   cursor: pointer;
   transition: background .2s, border-color .2s;
   user-select: none;
 }
 .theme-toggle:hover { border-color: var(--subheading); }
-.toggle-icon { font-size: 16px; line-height: 1; }
+.toggle-icon { font-size: 15px; line-height: 1; }
 
 /* ── BENTO GRID ──────────────────────────────────────── */
 .bento-grid {
@@ -382,13 +383,8 @@ body.dark .icon-inline { color: #e8e8e8; }
 .card-origin .ph { font-size: 12px; margin-right: 4px; vertical-align: -0.12em; color: var(--card-bg); -webkit-text-stroke: 1px #bbbbbb; }
 .bcal-dot .ph { font-size: 10px; }
 
-.toggle-label {
-  font-size: 9px; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--annotation);
-  font-family: inherit;
-}
 .toggle-track {
-  width: 32px; height: 18px;
+  width: 18px; height: 32px;
   background: var(--rule);
   border-radius: 9px;
   position: relative;
@@ -404,8 +400,7 @@ body.dark .icon-inline { color: #e8e8e8; }
   transition: transform .2s, background .2s;
 }
 body.dark .toggle-track  { background: var(--heading); }
-body.dark .toggle-thumb  { transform: translateX(14px); background: #fff; }
-body.dark .toggle-label  { color: #aaa; }
+body.dark .toggle-thumb  { transform: translateY(14px); background: #fff; }
 
 /* ── RESPONSIVE ────────────────────────────────────────── */
 /* Fix horizontal scroll: plant-grid min-width too wide */
@@ -444,8 +439,7 @@ body.dark .toggle-label  { color: #aaa; }
   .section-title { font-size: 10px; }
 
   /* Theme toggle shifts down on mobile to avoid overlap with content */
-  .theme-toggle { top: 10px; right: 10px; padding: 5px 10px 5px 7px; }
-  .toggle-label { display: none; }
+  .theme-toggle { top: 6px; right: 10px; padding: 6px; }
 }
 
 @media (max-width: 480px) {
@@ -1156,9 +1150,9 @@ footer { text-align: center; padding: 24px 32px; border: none; margin-top: 20px;
 <body>
 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
   <i class="ph ph-moon toggle-icon" id="toggle-icon"></i>
-  <span class="toggle-label" id="toggle-label">Dark</span>
   <div class="toggle-track"><div class="toggle-thumb"></div></div>
 </button>
+
 <div class="page">
 
 <!-- SITE HEADER -->
@@ -9612,14 +9606,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // ── DARK MODE TOGGLE ─────────────────────────────────────
   var toggleBtn   = document.getElementById('theme-toggle');
   var toggleIcon  = document.getElementById('toggle-icon');
-  var toggleLabel = document.getElementById('toggle-label');
   var isDark = false;
   try { isDark = localStorage.getItem('maravila-theme') === 'dark'; } catch (e) { /* storage blocked (e.g. Safari Private Browsing) — default to light, don't let it break the rest of the page */ }
 
   function applyTheme(dark) {
     document.body.classList.toggle('dark', dark);
     toggleIcon.className  = dark ? 'ph ph-sun toggle-icon' : 'ph ph-moon toggle-icon';
-    toggleLabel.textContent = dark ? 'Bright' : 'Dark';
     try { localStorage.setItem('maravila-theme', dark ? 'dark' : 'light'); } catch (e) { /* storage blocked — theme just won't persist across visits */ }
   }
 
